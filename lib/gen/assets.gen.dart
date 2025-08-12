@@ -97,9 +97,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/email.png
   AssetGenImage get email => const AssetGenImage('assets/icons/email.png');
 
-  /// File path: assets/icons/fi-rr-eye-crossed.png
-  AssetGenImage get fiRrEyeCrossed =>
-      const AssetGenImage('assets/icons/fi-rr-eye-crossed.png');
+  /// File path: assets/icons/eye-crossed.png
+  AssetGenImage get eyeCrossed =>
+      const AssetGenImage('assets/icons/eye-crossed.png');
+
+  /// File path: assets/icons/eye-open.png
+  AssetGenImage get eyeOpen => const AssetGenImage('assets/icons/eye-open.png');
 
   /// File path: assets/icons/flag.png
   AssetGenImage get flag => const AssetGenImage('assets/icons/flag.png');
@@ -156,7 +159,8 @@ class $AssetsIconsGen {
         dislike,
         download,
         email,
-        fiRrEyeCrossed,
+        eyeCrossed,
+        eyeOpen,
         flag,
         google,
         like,
@@ -167,6 +171,10 @@ class $AssetsIconsGen {
         uploadVideo,
         user
       ];
+
+  get fiRrEyeCrossed => null;
+
+  get emailIcon => null;
 }
 
 class $AssetsImagesGen {

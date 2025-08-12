@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trope/gen/assets.gen.dart'; // Ensure the generated file is imported
 import 'package:trope/view/widgets/active_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -11,12 +12,11 @@ class WelcomeScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20), // Side padding for better design
           child: Column(
             children: [
-              const SizedBox(height: 300),
+              const SizedBox(height: 300), // Adjusted to position logo properly
 
               // Logo
               Center(
-                child: Image.asset(
-                  'assets/images/MainLogo.png',
+                child: Assets.images.mainLogo.image( // Use generated asset
                   width: 194.68,
                   height: 76.91,
                 ),
