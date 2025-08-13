@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:trope/gen/assets.gen.dart';
 import 'package:trope/view/widgets/active_button.dart';
 import 'package:trope/view/widgets/text_input_box.dart';
 import 'package:trope/view/widgets/password_input.dart';
-
+import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -29,7 +28,6 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Center Title
               const Text(
                 "Sign in",
                 style: TextStyle(
@@ -40,27 +38,21 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const SizedBox(height: 40),
-
-              // Email Field (Reusable Widget)
               TextInputBox(
                 controller: _emailController,
                 label: "Email",
                 hintText: "Enter your email",
                 suffixIcon: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Assets.icons.email.image(width: 20, height: 20), // Adjusted size to match eye icon
+                  child: Assets.icons.email.image(width: 20, height: 20),
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Password Field (Reusable Widget)
               PasswordInput(
                 controller: _passwordController,
                 label: "Password",
               ),
               const SizedBox(height: 20),
-
-              // Remember Me + Forget Password
               Row(
                 children: [
                   GestureDetector(
@@ -86,7 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   const Text("Remember me", style: TextStyle(color: Colors.white)),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () => Get.toNamed('/forgetPassword'),
+                    onTap: () => context.push('/forgetPassword'),
                     child: const Text(
                       "Forget password?",
                       style: TextStyle(color: Color(0xFF004AAD)),
@@ -95,8 +87,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 ],
               ),
               const SizedBox(height: 30),
-
-              // Sign In Button
               ActiveButton(
                 text: "Sign in",
                 onPressed: () {
@@ -104,16 +94,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   print("Password: ${_passwordController.text}");
                 },
               ),
-
               const SizedBox(height: 20),
-
-              // Already have an account
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Do you have an account?", style: TextStyle(color: Colors.white)),
                   GestureDetector(
-                    onTap: () => Get.toNamed(Routes.signUp),  // Navigate to SignUpScreen
+                    onTap: () => context.push(Routes.signUp),
                     child: const Text(
                       " Sign Up",
                       style: TextStyle(
@@ -125,8 +112,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-
-              // Or
               Row(
                 children: [
                   Expanded(child: Divider(color: Colors.grey.shade700)),
@@ -138,20 +123,12 @@ class _SignInScreenState extends State<SignInScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-
-              // Social Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Assets.icons.apple.image(height: 48),
-                  ),
+                  InkWell(onTap: () {}, child: Assets.icons.apple.image(height: 48)),
                   const SizedBox(width: 24),
-                  InkWell(
-                    onTap: () {},
-                    child: Assets.icons.google.image(height: 48),
-                  ),
+                  InkWell(onTap: () {}, child: Assets.icons.google.image(height: 48)),
                 ],
               ),
             ],

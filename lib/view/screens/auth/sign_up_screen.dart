@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:trope/gen/assets.gen.dart';
 import 'package:trope/view/widgets/text_input_box.dart';
 import 'package:trope/view/widgets/password_input.dart';
 import 'package:trope/view/widgets/active_button.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -28,7 +28,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Title
               const Text(
                 "Create an account",
                 style: TextStyle(
@@ -39,20 +38,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               const SizedBox(height: 40),
-
-              // Username
               TextInputBox(
                 controller: _usernameController,
                 label: "Username",
                 hintText: "Enter your full name",
                 suffixIcon: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Assets.icons.user.image(width: 20, height: 20), // user.png icon
+                  child: Assets.icons.user.image(width: 20, height: 20),
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Email
               TextInputBox(
                 controller: _emailController,
                 label: "Email",
@@ -63,26 +58,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Password
               PasswordInput(
                 controller: _passwordController,
                 label: "Password",
               ),
               const SizedBox(height: 20),
-
-              // Confirm Password
               PasswordInput(
                 controller: _confirmPasswordController,
                 label: "Confirm Password",
               ),
               const SizedBox(height: 30),
-
-              // Sign Up Button
               ActiveButton(
                 text: "Sign up",
                 onPressed: () {
-                  // TODO: Add signup logic
                   print("Username: ${_usernameController.text}");
                   print("Email: ${_emailController.text}");
                   print("Password: ${_passwordController.text}");
@@ -90,14 +78,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
               const SizedBox(height: 20),
-
-              // Already have an account
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text("Do you have an account?", style: TextStyle(color: Colors.white)),
                   GestureDetector(
-                    onTap: () => Get.back(),
+                    onTap: () => context.pop(),
                     child: const Text(
                       " Sign in",
                       style: TextStyle(
@@ -109,8 +95,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-
-              // Or
               Row(
                 children: [
                   Expanded(child: Divider(color: Colors.grey.shade700)),
@@ -122,20 +106,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ],
               ),
               const SizedBox(height: 16),
-
-              // Social Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Assets.icons.apple.image(height: 48),
-                  ),
+                  InkWell(onTap: () {}, child: Assets.icons.apple.image(height: 48)),
                   const SizedBox(width: 24),
-                  InkWell(
-                    onTap: () {},
-                    child: Assets.icons.google.image(height: 48),
-                  ),
+                  InkWell(onTap: () {}, child: Assets.icons.google.image(height: 48)),
                 ],
               ),
             ],

@@ -175,6 +175,8 @@ class $AssetsIconsGen {
   get fiRrEyeCrossed => null;
 
   get emailIcon => null;
+
+  get BackButton => null;
 }
 
 class $AssetsImagesGen {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trope/gen/assets.gen.dart'; // Ensure the generated file is imported
+import 'package:trope/gen/assets.gen.dart';
 import 'package:trope/view/widgets/active_button.dart';
+import 'package:go_router/go_router.dart';
+import '../../../app/routes/app_routes.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -9,32 +11,24 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20), // Side padding for better design
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const SizedBox(height: 300), // Adjusted to position logo properly
-
-              // Logo
+              const SizedBox(height: 300),
               Center(
-                child: Assets.images.mainLogo.image( // Use generated asset
+                child: Assets.images.mainLogo.image(
                   width: 194.68,
                   height: 76.91,
                 ),
               ),
-
               const Spacer(),
-
-              // Sign In Button (Reusable)
               ActiveButton(
                 text: 'Sign in',
                 onPressed: () {
-                  Navigator.pushNamed(context, '/signIn');
+                  context.push(Routes.signIn);
                 },
               ),
-
               const SizedBox(height: 10),
-
-              // Sign Up Button (Full width)
               SizedBox(
                 height: 50.0,
                 width: double.infinity,
@@ -47,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/signUp');
+                    context.push(Routes.signUp);
                   },
                   child: const Text(
                     'Sign up',
@@ -55,7 +49,6 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
             ],
           ),

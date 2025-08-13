@@ -1,5 +1,9 @@
-abstract class Routes {
-  static const welcome = '/welcome';
+class Routes {
+  static const welcome = '/';
   static const signIn = '/signIn';
   static const signUp = '/signUp';
+  static const forgetPassword = '/forgetPassword';
+  static const otp = '/otp';
+  static const passwordReset = '/passwordReset';
+  static const updatePassword = '/updatePassword';
 }
