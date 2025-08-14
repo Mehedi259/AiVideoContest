@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../view/screens/auth/password_updated_success_screen.dart';
 import '../../view/screens/auth/reset_confirm_screen.dart';
 import '../../view/screens/auth/welcome_screen.dart';
 import '../../view/screens/auth/sign_in_screen.dart';
@@ -9,6 +10,7 @@ import '../../view/screens/auth/sign_up_screen.dart';
 import '../../view/screens/auth/forget_password_screen.dart';
 import '../../view/screens/auth/otp_screen.dart';
 import '../../view/screens/auth/update_password_screen.dart';
+import '../../view/screens/user_flow/home_screen.dart';
 import 'app_routes.dart';
 
 String _timestamp() {
@@ -78,9 +80,26 @@ class AppPages {
         name: 'Update Password Screen',
         builder: (context, state) {
           _logRouteChange('Update Password Screen', state.uri.toString());
-          return const UpdatePasswordScreen();  // tumar update password screen class name
+          return const UpdatePasswordScreen();
         },
       ),
+      GoRoute(
+        path: Routes.success,
+        name: 'Success Screen',
+        builder: (context, state) {
+          _logRouteChange('Success Screen', state.uri.toString());
+          return SuccessScreen();
+        },
+      ),
+      GoRoute(
+        path: Routes.home,
+        name: 'Home Screen',
+        builder: (context, state) {
+          _logRouteChange('Home Screen', state.uri.toString());
+          return HomeScreen();
+        },
+      ),
+
     ],
   );
 }

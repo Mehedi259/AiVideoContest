@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../widgets/hover_effect_button.dart';
+
+
 class UpdatePasswordScreen extends StatefulWidget {
   const UpdatePasswordScreen({super.key});
 
@@ -14,6 +17,19 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
+
+  bool get _isFormFilled =>
+      _passwordController.text.isNotEmpty &&
+          _confirmController.text.isNotEmpty;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(_onFormChange);
+    _confirmController.addListener(_onFormChange);
+  }
+
+  void _onFormChange() => setState(() {});
 
   @override
   void dispose() {
@@ -44,9 +60,13 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white.withOpacity(0.4)),
+                    border: Border.all(color: Colors.white),
                   ),
-                  child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
               ),
 
@@ -98,12 +118,12 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Enter your new password',
-                  hintStyle: TextStyle(color: Colors.white54),
+                  hintStyle: const TextStyle(color: Colors.white54),
                   filled: true,
                   fillColor: Colors.transparent,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: borderRadius,
-                    borderSide: BorderSide(color: Colors.white54),
+                    borderSide: const BorderSide(color: Colors.white54),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: borderRadius,
@@ -111,7 +131,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      _obscurePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
                       color: Colors.white54,
                     ),
                     onPressed: () {
@@ -120,7 +142,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                       });
                     },
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
               ),
 
@@ -146,12 +169,12 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Re-enter password',
-                  hintStyle: TextStyle(color: Colors.white54),
+                  hintStyle: const TextStyle(color: Colors.white54),
                   filled: true,
                   fillColor: Colors.transparent,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: borderRadius,
-                    borderSide: BorderSide(color: Colors.white54),
+                    borderSide: const BorderSide(color: Colors.white54),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: borderRadius,
@@ -159,7 +182,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      _obscureConfirmPassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
                       color: Colors.white54,
                     ),
                     onPressed: () {
@@ -168,35 +193,25 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                       });
                     },
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
               ),
 
               const SizedBox(height: 32),
 
-              // Update Password Button
-              SizedBox(
-                width: double.infinity,
-                height: 44,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF13294B),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                  onPressed: () {
-                    // TODO: Add update password logic
-                  },
-                  child: const Text(
-                    'Update Password',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+              // Update Password Button (Using HoverEffectButton)
+              HoverEffectButton(
+                text: 'Update Password',
+                isActive: _isFormFilled,
+                onTap: _isFormFilled
+                    ? () {
+
+                  context.push('/success');
+                }
+                    : null,
               ),
+
             ],
           ),
         ),

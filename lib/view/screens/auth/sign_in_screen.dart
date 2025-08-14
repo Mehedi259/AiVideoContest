@@ -90,6 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ActiveButton(
                 text: "Sign in",
                 onPressed: () {
+                  context.go(Routes.home);
                   print("Email: ${_emailController.text}");
                   print("Password: ${_passwordController.text}");
                 },
