@@ -22,7 +22,7 @@ class CustomVideoCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 165,
+        width: 160,
         height: 268,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),

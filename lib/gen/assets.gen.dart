@@ -66,6 +66,22 @@ class $AssetsIconsGen {
   AssetGenImage get activeDot =>
       const AssetGenImage('assets/icons/active_dot.png');
 
+  /// File path: assets/icons/active_home.png
+  AssetGenImage get activeHome =>
+      const AssetGenImage('assets/icons/active_home.png');
+
+  /// File path: assets/icons/active_like.png
+  AssetGenImage get activeLike =>
+      const AssetGenImage('assets/icons/active_like.png');
+
+  /// File path: assets/icons/active_profile.png
+  AssetGenImage get activeProfile =>
+      const AssetGenImage('assets/icons/active_profile.png');
+
+  /// File path: assets/icons/active_winner.png
+  AssetGenImage get activeWinner =>
+      const AssetGenImage('assets/icons/active_winner.png');
+
   /// File path: assets/icons/apple.png
   AssetGenImage get apple => const AssetGenImage('assets/icons/apple.png');
 
@@ -80,8 +96,12 @@ class $AssetsIconsGen {
       const AssetGenImage('assets/icons/competetion.png');
 
   /// File path: assets/icons/contactUs.jpg
-  AssetGenImage get contactUs =>
+  AssetGenImage get contactUsJpg =>
       const AssetGenImage('assets/icons/contactUs.jpg');
+
+  /// File path: assets/icons/contactUs.png
+  AssetGenImage get contactUsPng =>
+      const AssetGenImage('assets/icons/contactUs.png');
 
   /// File path: assets/icons/crossIcon.png
   AssetGenImage get crossIcon =>
@@ -96,13 +116,6 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/email.png
   AssetGenImage get email => const AssetGenImage('assets/icons/email.png');
-
-  /// File path: assets/icons/eye-crossed.png
-  AssetGenImage get eyeCrossed =>
-      const AssetGenImage('assets/icons/eye-crossed.png');
-
-  /// File path: assets/icons/eye-open.png
-  AssetGenImage get eyeOpen => const AssetGenImage('assets/icons/eye-open.png');
 
   /// File path: assets/icons/flag.png
   AssetGenImage get flag => const AssetGenImage('assets/icons/flag.png');
@@ -150,17 +163,20 @@ class $AssetsIconsGen {
         uplodedVideo,
         votedVideo,
         activeDot,
+        activeHome,
+        activeLike,
+        activeProfile,
+        activeWinner,
         apple,
         bxShare,
         camera,
         competetion,
-        contactUs,
+        contactUsJpg,
+        contactUsPng,
         crossIcon,
         dislike,
         download,
         email,
-        eyeCrossed,
-        eyeOpen,
         flag,
         google,
         like,
@@ -172,11 +188,7 @@ class $AssetsIconsGen {
         user
       ];
 
-  get fiRrEyeCrossed => null;
 
-  get emailIcon => null;
-
-  get BackButton => null;
 }
 
 class $AssetsImagesGen {

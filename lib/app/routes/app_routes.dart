@@ -8,5 +8,8 @@ class Routes {
   static const updatePassword = '/updatePassword';
   static const success = '/success';
   static const home = '/home';
+  static const likedVideos = '/likedVideos';
+  static const uploadVideos = '/uploadVideos';
+
 
 }

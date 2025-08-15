@@ -11,6 +11,7 @@ import '../../view/screens/auth/forget_password_screen.dart';
 import '../../view/screens/auth/otp_screen.dart';
 import '../../view/screens/auth/update_password_screen.dart';
 import '../../view/screens/user_flow/home_screen.dart';
+import '../../view/screens/user_flow/liked_video_screen.dart';
 import 'app_routes.dart';
 
 String _timestamp() {
@@ -99,6 +100,17 @@ class AppPages {
           return HomeScreen();
         },
       ),
+      GoRoute(
+        path: Routes.likedVideos,
+        name: 'Liked Videos Screen',
+        builder: (context, state) {
+          _logRouteChange('Liked Videos Screen', state.uri.toString());
+          return const LikedVideosScreen();
+        },
+      ),
+
+
+
 
     ],
   );

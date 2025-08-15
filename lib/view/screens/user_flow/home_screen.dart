@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:trope/view/widgets/custom_video_card.dart';
 import 'package:trope/view/widgets/custom_drawer.dart';
+import 'package:trope/view/widgets/navigation_bar.dart';
 import 'package:trope/gen/assets.gen.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../../app/routes/app_routes.dart';
+
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int _currentIndex = 0;
 
   final List<Map<String, String>> videos = [
     {
@@ -45,16 +58,39 @@ class HomeScreen extends StatelessWidget {
     },
   ];
 
+  void _onNavTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        context.go(Routes.home);
+        break;
+      case 1:
+        context.go(Routes.likedVideos);
+        break;
+      case 2:
+      // Add video screen navigation
+        break;
+      case 3:
+      // Winner screen navigation
+        break;
+      case 4:
+      // Profile screen navigation
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey, // Scaffold key
+      key: _scaffoldKey,
       backgroundColor: Colors.black,
-      drawer: const CustomDrawer(), // Your custom drawer widget
+      drawer: const CustomDrawer(),
       body: SafeArea(
         child: Column(
           children: [
-            // Topbar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Row(
@@ -78,8 +114,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Box with "Halloween Theme"
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -103,8 +137,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-
-            // Banner
             Container(
               width: 362,
               height: 129,
@@ -117,8 +149,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-
-            // Videos Grid
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -144,20 +174,9 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-
-      // Bottom Navigation
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.white70,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onNavTap,
       ),
     );
   }
