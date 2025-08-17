@@ -5,7 +5,6 @@ import 'package:trope/gen/assets.gen.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
 
-
 class UploadVideoScreen extends StatefulWidget {
   const UploadVideoScreen({super.key});
 
@@ -14,10 +13,37 @@ class UploadVideoScreen extends StatefulWidget {
 }
 
 class _UploadVideoScreenState extends State<UploadVideoScreen> {
-  int _currentIndex = 2; // Add Video tab is active
+  int _currentIndex = 2; // Add Video tab active
 
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _themeController = TextEditingController(text: "Halloween");
+  final TextEditingController _themeController =
+  TextEditingController(text: "Halloween");
+
+  void _onNavTap(int index) {
+    if (_currentIndex == index) return;
+
+    setState(() {
+      _currentIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        context.go(Routes.home);
+        break;
+      case 1:
+        context.go(Routes.likedVideos);
+        break;
+      case 2:
+        context.go(Routes.uploadVideos);
+        break;
+      case 3:
+        context.go(Routes.winner);
+        break;
+      case 4:
+        GoRouter.of(context).go(Routes.profile);
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +92,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                         Assets.icons.uploadVideo.image(width: 40, height: 40),
                         const SizedBox(height: 8),
                         const Text(
-                          "Upload an Video",
+                          "Upload a Video",
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
@@ -94,7 +120,8 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
               ),
               const SizedBox(height: 16),
@@ -112,7 +139,8 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
               ),
               const Spacer(),
@@ -144,29 +172,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
       ),
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
-          switch (index) {
-            case 0:
-              context.go(Routes.home);
-              break;
-            case 1:
-              context.go(Routes.likedVideos);
-              break;
-            case 2:
-            // Already on Add Video
-              break;
-            case 3:
-            // Winner
-              break;
-            case 4:
-            // Profile
-              break;
-          }
-        },
+        onTap: _onNavTap,
       ),
     );
   }

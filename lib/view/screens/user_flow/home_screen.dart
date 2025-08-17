@@ -71,13 +71,13 @@ class _HomeScreenState extends State<HomeScreen> {
         context.go(Routes.likedVideos);
         break;
       case 2:
-      // Add video screen navigation
+        GoRouter.of(context).go(Routes.uploadVideos);
         break;
       case 3:
-      // Winner screen navigation
+        GoRouter.of(context).go(Routes.winner);
         break;
       case 4:
-      // Profile screen navigation
+        GoRouter.of(context).go(Routes.profile);
         break;
     }
   }

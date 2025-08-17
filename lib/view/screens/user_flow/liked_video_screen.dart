@@ -54,13 +54,13 @@ class _LikedVideosScreenState extends State<LikedVideosScreen> {
               context.go(Routes.likedVideos);
               break;
             case 2:
-            // Add video
+              GoRouter.of(context).go(Routes.uploadVideos);
               break;
             case 3:
-            // Winner
+              GoRouter.of(context).go(Routes.winner);
               break;
             case 4:
-            // Profile
+              GoRouter.of(context).go(Routes.profile);
               break;
           }
         },
