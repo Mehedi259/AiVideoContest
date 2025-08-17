@@ -5,6 +5,8 @@ import 'package:trope/view/widgets/password_input.dart';
 import 'package:trope/view/widgets/active_button.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/routes/app_routes.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -71,6 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ActiveButton(
                 text: "Sign up",
                 onPressed: () {
+                  GoRouter.of(context).go(Routes.signIn);
                   print("Username: ${_usernameController.text}");
                   print("Email: ${_emailController.text}");
                   print("Password: ${_passwordController.text}");
@@ -83,7 +86,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   const Text("Do you have an account?", style: TextStyle(color: Colors.white)),
                   GestureDetector(
-                    onTap: () => context.pop(),
+                    onTap: () {
+                      GoRouter.of(context).go(Routes.signIn);
+                    },
                     child: const Text(
                       " Sign in",
                       style: TextStyle(

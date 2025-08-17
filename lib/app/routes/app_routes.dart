@@ -10,6 +10,10 @@ class Routes {
   static const home = '/home';
   static const likedVideos = '/likedVideos';
   static const uploadVideos = '/uploadVideos';
+  static const winner = '/winner';
+  static const profile = '/profile';
+  static const competition = '/competition';
+  static const feedback = '/feedback';
 
 
 }

@@ -18,6 +18,7 @@ class CustomNavigationBar extends StatelessWidget {
     required double top,
     required double left,
     double dotOffsetX = 10,
+    bool isCenter = false,
   }) {
     return Positioned(
       top: top,
@@ -27,11 +28,22 @@ class CustomNavigationBar extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            icon,
+            if (isCenter)
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF004AAD),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Center(child: icon),
+              )
+            else
+              icon,
             if (isActive)
               Positioned(
                 top: -12,
-                left: dotOffsetX,
+                left: isCenter ? 25.5 : dotOffsetX,
                 child: Assets.icons.activeDot.image(
                   width: 9.12,
                   height: 9.12,
@@ -64,7 +76,6 @@ class CustomNavigationBar extends StatelessWidget {
             isActive: currentIndex == 0,
             top: 30,
             left: width * 0.07,
-            dotOffsetX: 10,
           ),
           _buildNavItem(
             index: 1,
@@ -74,40 +85,16 @@ class CustomNavigationBar extends StatelessWidget {
             isActive: currentIndex == 1,
             top: 30,
             left: width * 0.27,
-            dotOffsetX: 10,
           ),
-          Positioned(
-            left: width * 0.5 - 30,
+          _buildNavItem(
+            index: 2,
+            icon: currentIndex == 2
+                ? Assets.icons.activeAddVideoCopy.image(width: 32, height: 32)
+                : Assets.icons.inActiveAddVideo.image(width: 20, height: 20),
+            isActive: currentIndex == 2,
             top: -20,
-            child: GestureDetector(
-              onTap: () => onTap(2),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF004AAD),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Center(
-                      child: Assets.icons.inActiveAddVideo
-                          .image(width: 32, height: 32),
-                    ),
-                  ),
-                  if (currentIndex == 2)
-                    Positioned(
-                      top: -12,
-                      left: 25.5,
-                      child: Assets.icons.activeDot.image(
-                        width: 9.12,
-                        height: 9.12,
-                      ),
-                    ),
-                ],
-              ),
-            ),
+            left: width * 0.5 - 30,
+            isCenter: true,
           ),
           _buildNavItem(
             index: 3,
@@ -117,7 +104,6 @@ class CustomNavigationBar extends StatelessWidget {
             isActive: currentIndex == 3,
             top: 30,
             left: width * 0.68,
-            dotOffsetX: 10,
           ),
           _buildNavItem(
             index: 4,
@@ -127,7 +113,6 @@ class CustomNavigationBar extends StatelessWidget {
             isActive: currentIndex == 4,
             top: 30,
             left: width * 0.88,
-            dotOffsetX: 10,
           ),
         ],
       ),

@@ -7,7 +7,6 @@ import 'package:trope/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -71,13 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
         context.go(Routes.likedVideos);
         break;
       case 2:
-      // Add video screen navigation
+        GoRouter.of(context).go(Routes.uploadVideos);
         break;
       case 3:
-      // Winner screen navigation
+        GoRouter.of(context).go(Routes.winner);
         break;
       case 4:
-      // Profile screen navigation
+        GoRouter.of(context).go(Routes.profile);
         break;
     }
   }
@@ -91,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            // 🔹 Sticky Top Bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Row(
@@ -114,6 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
+            // 🔹 Sticky Theme Tag
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -121,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 23,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  border: Border.all(color: const Color(0xFF004AAD), width: 1),
+                  border: Border.all(color: Color(0xFF004AAD), width: 1),
                 ),
                 child: const Center(
                   child: Text(
@@ -136,38 +138,51 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+
             const SizedBox(height: 15),
-            Container(
-              width: 362,
-              height: 129,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                image: DecorationImage(
-                  image: AssetImage(Assets.images.themeImage.path),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 15),
+
+            // 🔹 Scrollable Content
             Expanded(
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Wrap(
-                    spacing: 15,
-                    runSpacing: 15,
-                    children: videos.map((video) {
-                      return CustomVideoCard(
-                        imagePath: video['image']!,
-                        title: video['title']!,
-                        user: video['username']!,
-                        views: video['views']!,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/home_vote');
-                        },
-                      );
-                    }).toList(),
-                  ),
+                child: Column(
+                  children: [
+                    // Banner
+                    Container(
+                      width: 362,
+                      height: 129,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          image: AssetImage(Assets.images.themeImage.path),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    // Video list
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Wrap(
+                        spacing: 15,
+                        runSpacing: 15,
+                        children: videos.map((video) {
+                          return CustomVideoCard(
+                            imagePath: video['image']!,
+                            title: video['title']!,
+                            user: video['username']!,
+                            views: video['views']!,
+                            onTap: () {
+                              Navigator.pushNamed(context, '/home_vote');
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
             ),

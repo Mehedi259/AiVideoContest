@@ -12,6 +12,10 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Active_Add_video - Copy.png
+  AssetGenImage get activeAddVideoCopy =>
+      const AssetGenImage('assets/icons/Active_Add_video - Copy.png');
+
   /// File path: assets/icons/Arrow - Left.png
   AssetGenImage get arrowLeft =>
       const AssetGenImage('assets/icons/Arrow - Left.png');
@@ -149,6 +153,7 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        activeAddVideoCopy,
         arrowLeft,
         backButton,
         badges,
@@ -187,8 +192,6 @@ class $AssetsIconsGen {
         uploadVideo,
         user
       ];
-
-
 }
 
 class $AssetsImagesGen {

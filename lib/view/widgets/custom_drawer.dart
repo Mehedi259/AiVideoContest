@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../app/routes/app_routes.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -12,107 +15,112 @@ class CustomDrawer extends StatelessWidget {
         right: BorderSide(color: Color(0xFF424242), width: 1),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 61),
+          // scrollable part
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 61),
 
-          // Profile Section
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: Image.asset(
-                        'assets/images/profile_picture.jpg',
-                        width: 48,
-                        height: 48,
-                        fit: BoxFit.cover,
-                      ),
+                  // Profile Section
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: Image.asset(
+                                'assets/images/profile_picture.jpg',
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 2,
+                              right: 2,
+                              child: Image.asset(
+                                'assets/icons/profile_active_dot.png',
+                                width: 12,
+                                height: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              "HELLO",
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                color: Color(0xFFB0B3B8),
+                                letterSpacing: -0.01,
+                              ),
+                            ),
+                            Text(
+                              "JOHN DOE",
+                              style: TextStyle(
+                                fontFamily: 'Raleway',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Colors.white,
+                                letterSpacing: -0.01,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      bottom: 2,
-                      right: 2,
-                      child: Image.asset(
-                        'assets/icons/profile_active_dot.png',
-                        width: 12,
-                        height: 12,
-                      ),
+                  ),
+
+                  const SizedBox(height: 40),
+
+                  // Menu Items
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        _MenuItem(
+                          iconPath: 'assets/icons/competetion.png',
+                          title: "COMPETITION",
+                          textColor: const Color(0xFF004AAD),
+                          onTap: () {
+                            GoRouter.of(context).go(Routes.competition);
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                        _MenuItem(
+                          iconPath: 'assets/icons/contactUs.png',
+                          title: "CONTACT US & FEEDBACK",
+                          textColor: Colors.white,
+                          height: 72,
+                          onTap: () {
+                            GoRouter.of(context).go(Routes.feedback);
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "HELLO",
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: Color(0xFFB0B3B8),
-                        letterSpacing: -0.01,
-                      ),
-                    ),
-                    Text(
-                      "JOHN DOE",
-                      style: const TextStyle(
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: Colors.white,
-                        letterSpacing: -0.01,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
 
-          const SizedBox(height: 40),
-
-          // Menu Items
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                // Competition
-                _MenuItem(
-                  iconPath: 'assets/icons/competetion.png',
-                  title: "COMPETITION",
-                  textColor: const Color(0xFF004AAD),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/competition');
-                  },
-                ),
-                const SizedBox(height: 12),
-
-                // Contact Us & Feedback
-                _MenuItem(
-                  iconPath: 'assets/icons/contactUs.png',
-                  title: "CONTACT US & FEEDBACK",
-                  textColor: Colors.white,
-                  height: 72,
-                  onTap: () {
-                    Navigator.pushNamed(context, '/contact');
-                  },
-                ),
-              ],
-            ),
-          ),
-
-          const Spacer(),
-
-          // Logout Button
+          // logout always bottom
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/welcome');
+                GoRouter.of(context).go(Routes.welcome);
               },
               child: Container(
                 height: 57,

@@ -10,8 +10,13 @@ import '../../view/screens/auth/sign_up_screen.dart';
 import '../../view/screens/auth/forget_password_screen.dart';
 import '../../view/screens/auth/otp_screen.dart';
 import '../../view/screens/auth/update_password_screen.dart';
+import '../../view/screens/user_flow/competetion_rules_screen.dart';
+import '../../view/screens/user_flow/contact_feedback_screen.dart';
 import '../../view/screens/user_flow/home_screen.dart';
 import '../../view/screens/user_flow/liked_video_screen.dart';
+import '../../view/screens/user_flow/profile_screen.dart';
+import '../../view/screens/user_flow/upload_video_screen.dart';
+import '../../view/screens/user_flow/winner_screen.dart';
 import 'app_routes.dart';
 
 String _timestamp() {
@@ -108,6 +113,41 @@ class AppPages {
           return const LikedVideosScreen();
         },
       ),
+      GoRoute(
+        path: Routes.uploadVideos,
+        name: 'Upload Video Screen',
+        builder: (context, state) {
+          _logRouteChange('Upload Video Screen', state.uri.toString());
+          return const UploadVideoScreen();
+        },
+      ),
+      GoRoute(
+        path: Routes.winner,
+        name: 'Winner Screen',
+        builder: (context, state) {
+          _logRouteChange('Winner Screen', state.uri.toString());
+          return const WinnerScreen();
+        },
+      ),
+      GoRoute(
+        path: Routes.profile,
+        name: 'profile Screen',
+        builder: (context, state) {
+          _logRouteChange('profile Screen', state.uri.toString());
+          return const ProfileScreen();
+        },
+      ),
+      GoRoute(
+        path: Routes.competition,
+        builder: (context, state) => const CompetetionRulesScreen(),
+      ),
+      GoRoute(
+        path: Routes.feedback,
+        builder: (context, state) => const ContactFeedbackScreen(),
+      ),
+
+
+
 
 
 
