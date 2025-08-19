@@ -42,14 +42,48 @@ class ProfileScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const SizedBox(width: 16),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      Assets.images.profilePicture.path,
-                      width: 48,
-                      height: 48,
-                      fit: BoxFit.cover,
-                    ),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      /// Profile Picture with Border
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white, // border same as status dot
+                            width: 2,
+                          ),
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            Assets.images.profilePicture.path,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+
+                      /// Status Dot
+                      Positioned(
+                        top: 36,
+                        left: 36,
+                        child: Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF004AAD),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(width: 20),
                   Column(
@@ -95,25 +129,33 @@ class ProfileScreen extends StatelessWidget {
                     icon: Assets.icons.myAccount.path,
                     title: "My Account",
                     subtitle: "Make changes to your account",
-                    onTap: () {},
+                    onTap: () {
+                      GoRouter.of(context).go(Routes.myAccount);
+                    },
                   ),
                   ProfileCard(
                     icon: Assets.icons.uplodedVideo.path,
                     title: "Uploaded Video",
                     subtitle: "See your uploaded video",
-                    onTap: () {},
+                    onTap: () {
+                      GoRouter.of(context).go(Routes.uploadedVideos);
+                    },
                   ),
                   ProfileCard(
                     icon: Assets.icons.votedVideo.path,
                     title: "Voted Video",
                     subtitle: "Privacy policy and terms",
-                    onTap: () {},
+                    onTap: () {
+                      GoRouter.of(context).go(Routes.votedVideos);
+                    },
                   ),
                   ProfileCard(
                     icon: Assets.icons.badges.path,
                     title: "Badges",
                     subtitle: "See your badges",
-                    onTap: () {},
+                    onTap: () {
+                      GoRouter.of(context).go(Routes.badges);
+                    },
                   ),
                 ],
               ),

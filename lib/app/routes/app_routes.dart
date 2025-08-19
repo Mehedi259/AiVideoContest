@@ -14,6 +14,14 @@ class Routes {
   static const profile = '/profile';
   static const competition = '/competition';
   static const feedback = '/feedback';
+  static const editInformation = '/editInformation';
+  static const changePassword = '/changePassword';
+  static const ProfileScreen = '/ProfileScreen';
+  static const myAccount = '/myAccount';
+  static const uploadedVideos = '/uploadedVideos';
+  static const votedVideos = '/votedVideos';
+  static const badges = '/badges';
+
 
 
 }

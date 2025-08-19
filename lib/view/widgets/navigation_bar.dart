@@ -35,6 +35,14 @@ class CustomNavigationBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: const Color(0xFF004AAD),
                   borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF004AAD),
+                      offset: const Offset(0, 11.41),
+                      blurRadius: 11.41,
+                      spreadRadius: 0,
+                    ),
+                  ],
                 ),
                 child: Center(child: icon),
               )

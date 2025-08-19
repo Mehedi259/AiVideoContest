@@ -10,12 +10,18 @@ import '../../view/screens/auth/sign_up_screen.dart';
 import '../../view/screens/auth/forget_password_screen.dart';
 import '../../view/screens/auth/otp_screen.dart';
 import '../../view/screens/auth/update_password_screen.dart';
+import '../../view/screens/user_flow/badges_screen.dart';
+import '../../view/screens/user_flow/change_password_screen.dart';
 import '../../view/screens/user_flow/competetion_rules_screen.dart';
 import '../../view/screens/user_flow/contact_feedback_screen.dart';
+import '../../view/screens/user_flow/edit_profile_screen.dart';
 import '../../view/screens/user_flow/home_screen.dart';
 import '../../view/screens/user_flow/liked_video_screen.dart';
+import '../../view/screens/user_flow/my_account_screen.dart';
 import '../../view/screens/user_flow/profile_screen.dart';
 import '../../view/screens/user_flow/upload_video_screen.dart';
+import '../../view/screens/user_flow/uploaded_video_screen.dart';
+import '../../view/screens/user_flow/voted_video_screen.dart';
 import '../../view/screens/user_flow/winner_screen.dart';
 import 'app_routes.dart';
 
@@ -144,6 +150,34 @@ class AppPages {
       GoRoute(
         path: Routes.feedback,
         builder: (context, state) => const ContactFeedbackScreen(),
+      ),
+      GoRoute(
+        path: Routes.editInformation,
+        builder: (context, state) => const EditInformationScreen(),
+      ),
+      GoRoute(
+        path: Routes.changePassword,
+        builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: Routes.ProfileScreen,
+        builder: (context, state) => const MyAccountScreen(),
+      ),
+      GoRoute(
+        path: Routes.myAccount,
+        builder: (context, state) => const MyAccountScreen(),
+      ),
+      GoRoute(
+        path: Routes.uploadedVideos,
+        builder: (context, state) => const UploadedVideoScreen(),
+      ),
+      GoRoute(
+        path: Routes.votedVideos,
+        builder: (context, state) => const VotedVideoScreen(),
+      ),
+      GoRoute(
+        path: Routes.badges,
+        builder: (context, state) => const BadgeScreen(),
       ),
 
 

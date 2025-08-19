@@ -22,13 +22,17 @@ class _LikedVideosScreenState extends State<LikedVideosScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        title: const Text(
-          "Your Liked Videos",
-          style: TextStyle(
-            fontFamily: 'Raleway',
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-            color: Colors.white,
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Text(
+            "Your Liked Videos",
+            style: TextStyle(
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
+              height: 1, // line height fix
+              color: Colors.white,
+            ),
           ),
         ),
         centerTitle: true,
@@ -70,81 +74,92 @@ class _LikedVideosScreenState extends State<LikedVideosScreen> {
 
   Widget _buildVideoCard(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Column(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Assets.images.like1.image(
-                  width: double.infinity,
-                  height: 181,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Positioned(
-                top: 70,
-                left: (MediaQuery.of(context).size.width / 2) - 26,
-                child: Assets.icons.playIcon.image(
-                  width: 26,
-                  height: 25,
-                ),
-              ),
-            ],
-          ),
-          Container(
-            width: double.infinity,
-            height: 58,
-            decoration: BoxDecoration(
-              color: const Color(0x1AD9D9D9),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
+          /// Video Thumbnail
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Assets.images.like1.image(
+              width: 353,
+              height: 181,
+              fit: BoxFit.cover,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Dinner Event",
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        color: Colors.white,
+          ),
+
+          /// Play Icon
+          Positioned(
+            top: 159 - 109, // adjust relative position
+            left: 353 / 2 - 13, // center horizontally (26/2 = 13)
+            child: Assets.icons.playIcon.image(
+              width: 26,
+              height: 25,
+            ),
+          ),
+
+          /// Bottom Info Container
+          Positioned(
+            top: 181 - 58, // stick at bottom
+            child: Container(
+              width: 353,
+              height: 58,
+              decoration: BoxDecoration(
+                color: const Color(0x1AD9D9D9),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Title + Username
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Dinner Event",
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          height: 1,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "@zarif143",
+                      SizedBox(height: 4),
+                      Text(
+                        "@zarif143",
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          height: 1,
+                          color: Color(0xFFB0B3B8),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+
+                  /// Views
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      "472 views",
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w400,
-                        fontSize: 12,
+                        fontSize: 10,
+                        height: 1,
                         color: Color(0xFFB0B3B8),
                       ),
                     ),
-                  ],
-                ),
-                const Spacer(),
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    "472 views",
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 10,
-                      color: Color(0xFFB0B3B8),
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
