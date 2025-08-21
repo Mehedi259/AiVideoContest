@@ -38,8 +38,8 @@ class CustomNavigationBar extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xFF004AAD),
-                      offset: const Offset(0, 11.41),
-                      blurRadius: 11.41,
+                      offset: const Offset(0, 0),
+                      blurRadius: 0,
                       spreadRadius: 0,
                     ),
                   ],
@@ -97,7 +97,7 @@ class CustomNavigationBar extends StatelessWidget {
           _buildNavItem(
             index: 2,
             icon: currentIndex == 2
-                ? Assets.icons.activeAddVideoCopy.image(width: 32, height: 32)
+                ? Assets.icons.inActiveAddVideo.image(width: 20, height: 20)
                 : Assets.icons.inActiveAddVideo.image(width: 20, height: 20),
             isActive: currentIndex == 2,
             top: -20,
