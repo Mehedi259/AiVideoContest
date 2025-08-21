@@ -84,7 +84,7 @@ class CustomNavigationBar extends StatelessWidget {
             isActive: currentIndex == 0,
             top: 30,
             left: width * 0.07,
-          ),
+          ),//
           _buildNavItem(
             index: 1,
             icon: currentIndex == 1
