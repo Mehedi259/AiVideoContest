@@ -1,31 +1,32 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class CustomVideoCard extends StatelessWidget {
+class LikedVideoCard extends StatelessWidget {
   final String imagePath;
   final String title;
   final String user;
   final String views;
-  final String? rank; // optional for Top 3 badge
   final VoidCallback onTap;
 
-  const CustomVideoCard({
+  const LikedVideoCard({
     Key? key,
     required this.imagePath,
     required this.title,
     required this.user,
     required this.views,
     required this.onTap,
-    this.rank,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final double cardWidth = MediaQuery.of(context).size.width - 32; // full width with 16px padding
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 160,
-        height: 268,
+        margin: const EdgeInsets.only(bottom: 16),
+        width: cardWidth,
+        height: 220, // bigger height for full-width design
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           image: DecorationImage(
@@ -44,30 +45,6 @@ class CustomVideoCard extends StatelessWidget {
               ),
             ),
 
-            // ---------- Rank Badge (Only for Top 3) ----------
-            if (rank != null)
-              Positioned(
-                top: 10,
-                left: 10,
-                child: Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Text(
-                    rank!,
-                    style: const TextStyle(
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-
             // ---------- Bottom blur overlay ----------
             Positioned(
               bottom: 0,
@@ -81,9 +58,9 @@ class CustomVideoCard extends StatelessWidget {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                   child: Container(
-                    height: 79,
+                    height: 70,
                     color: const Color(0x1AD9D9D9),
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +76,7 @@ class CustomVideoCard extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -116,12 +93,6 @@ class CustomVideoCard extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 2),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
                             Text(
                               views,
                               style: const TextStyle(

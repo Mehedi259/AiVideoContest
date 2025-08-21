@@ -16,8 +16,10 @@ import '../../view/screens/user_flow/competetion_rules_screen.dart';
 import '../../view/screens/user_flow/contact_feedback_screen.dart';
 import '../../view/screens/user_flow/edit_profile_screen.dart';
 import '../../view/screens/user_flow/home_screen.dart';
+import '../../view/screens/user_flow/home_video_view_screen.dart';
 import '../../view/screens/user_flow/liked_video_screen.dart';
 import '../../view/screens/user_flow/my_account_screen.dart';
+import '../../view/screens/user_flow/notification.dart';
 import '../../view/screens/user_flow/profile_screen.dart';
 import '../../view/screens/user_flow/upload_video_screen.dart';
 import '../../view/screens/user_flow/uploaded_video_screen.dart';
@@ -178,6 +180,14 @@ class AppPages {
       GoRoute(
         path: Routes.badges,
         builder: (context, state) => const BadgeScreen(),
+      ),
+      GoRoute(
+        path: Routes.videoPlay,
+        builder: (context, state) => const VideoDetailScreen(),
+      ),
+      GoRoute(
+        path: Routes.notification,
+        builder: (context, state) => const NotificationScreen(),
       ),
 
 

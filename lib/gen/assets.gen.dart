@@ -111,8 +111,15 @@ class $AssetsIconsGen {
   AssetGenImage get crossIcon =>
       const AssetGenImage('assets/icons/crossIcon.png');
 
+  /// File path: assets/icons/delete.png
+  AssetGenImage get delete => const AssetGenImage('assets/icons/delete.png');
+
   /// File path: assets/icons/dislike.png
   AssetGenImage get dislike => const AssetGenImage('assets/icons/dislike.png');
+
+  /// File path: assets/icons/dislike_blue.png
+  AssetGenImage get dislikeBlue =>
+      const AssetGenImage('assets/icons/dislike_blue.png');
 
   /// File path: assets/icons/download.png
   AssetGenImage get download =>
@@ -124,14 +131,29 @@ class $AssetsIconsGen {
   /// File path: assets/icons/flag.png
   AssetGenImage get flag => const AssetGenImage('assets/icons/flag.png');
 
+  /// File path: assets/icons/full_screen.png
+  AssetGenImage get fullScreen =>
+      const AssetGenImage('assets/icons/full_screen.png');
+
   /// File path: assets/icons/google.png
   AssetGenImage get google => const AssetGenImage('assets/icons/google.png');
 
   /// File path: assets/icons/like.png
   AssetGenImage get like => const AssetGenImage('assets/icons/like.png');
 
+  /// File path: assets/icons/like_white.png
+  AssetGenImage get likeWhite =>
+      const AssetGenImage('assets/icons/like_white.png');
+
   /// File path: assets/icons/logout.png
   AssetGenImage get logout => const AssetGenImage('assets/icons/logout.png');
+
+  /// File path: assets/icons/notification.png
+  AssetGenImage get notification =>
+      const AssetGenImage('assets/icons/notification.png');
+
+  /// File path: assets/icons/pause.png
+  AssetGenImage get pause => const AssetGenImage('assets/icons/pause.png');
 
   /// File path: assets/icons/play_icon.png
   AssetGenImage get playIcon =>
@@ -179,13 +201,19 @@ class $AssetsIconsGen {
         contactUsJpg,
         contactUsPng,
         crossIcon,
+        delete,
         dislike,
+        dislikeBlue,
         download,
         email,
         flag,
+        fullScreen,
         google,
         like,
+        likeWhite,
         logout,
+        notification,
+        pause,
         playIcon,
         profileActiveDot,
         upload,
@@ -236,6 +264,9 @@ class $AssetsImagesGen {
   AssetGenImage get themeImage =>
       const AssetGenImage('assets/images/theme_image.jpg');
 
+  /// File path: assets/images/video1.mp4
+  String get video1 => 'assets/images/video1.mp4';
+
   /// File path: assets/images/video_four.jpg
   AssetGenImage get videoFour =>
       const AssetGenImage('assets/images/video_four.jpg');
@@ -259,7 +290,7 @@ class $AssetsImagesGen {
   AssetGenImage get winners => const AssetGenImage('assets/images/winners.jpg');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
+  List<dynamic> get values => [
         mainLogo,
         passwordChangedSuccessfully,
         congratulation,
@@ -271,6 +302,7 @@ class $AssetsImagesGen {
         profilePicture,
         right,
         themeImage,
+        video1,
         videoFour,
         videoOne,
         videoThree,
@@ -280,11 +312,22 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsVideosGen {
+  const $AssetsVideosGen();
+
+  /// File path: assets/videos/video2.mp4
+  String get video2 => 'assets/videos/video2.mp4';
+
+  /// List of all assets
+  List<String> get values => [video2];
+}
+
 class Assets {
   const Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsVideosGen videos = $AssetsVideosGen();
 }
 
 class AssetGenImage {

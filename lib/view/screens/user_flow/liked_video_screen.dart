@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trope/gen/assets.gen.dart';
-
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
+import '../../widgets/liked_video_card.dart';
 
 class LikedVideosScreen extends StatefulWidget {
   const LikedVideosScreen({super.key});
@@ -14,6 +14,52 @@ class LikedVideosScreen extends StatefulWidget {
 
 class _LikedVideosScreenState extends State<LikedVideosScreen> {
   int _currentIndex = 1; // Liked tab is active
+
+  // Dummy list for liked videos
+  final List<Map<String, String>> likedVideos = [
+    {
+      'title': 'Halloween Coffee',
+      'username': '@piash374',
+      'views': '7M views',
+      'image': Assets.images.videoOne.path,
+    },
+
+    {
+      'title': 'Halloween Coffee',
+      'username': '@piash374',
+      'views': '500k views',
+      'image': Assets.images.videoTwo.path,
+    },
+
+    {
+      'title': 'Halloween Coffee',
+      'username': '@piash374',
+      'views': '6M views',
+      'image': Assets.images.videoThree.path,
+    },
+
+    {
+      'title': 'Halloween Coffee',
+      'username': '@piash374',
+      'views': '2M views',
+      'image': Assets.images.videoTwo.path,
+    },
+
+    {
+      'title': 'Halloween Coffee',
+      'username': '@piash374',
+      'views': '4M views',
+      'image': Assets.images.videoOne.path,
+    },
+
+    {
+      'title': 'Halloween Coffee',
+      'username': '@piash374',
+      'views': '100M views',
+      'image': Assets.images.videoOne.path,
+    },
+
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +86,17 @@ class _LikedVideosScreenState extends State<LikedVideosScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         child: Column(
-          children: List.generate(5, (index) => _buildVideoCard(context)),
+          children: likedVideos.map((video) {
+            return LikedVideoCard(
+              imagePath: video['image']!,
+              title: video['title']!,
+              user: video['username']!,
+              views: video['views']!,
+              onTap: () {
+                GoRouter.of(context).go(Routes.videoPlay);
+              },
+            );
+          }).toList(),
         ),
       ),
       bottomNavigationBar: CustomNavigationBar(
@@ -68,101 +124,6 @@ class _LikedVideosScreenState extends State<LikedVideosScreen> {
               break;
           }
         },
-      ),
-    );
-  }
-
-  Widget _buildVideoCard(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          /// Video Thumbnail
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Assets.images.like1.image(
-              width: 353,
-              height: 181,
-              fit: BoxFit.cover,
-            ),
-          ),
-
-          /// Play Icon
-          Positioned(
-            top: 159 - 109, // adjust relative position
-            left: 353 / 2 - 13, // center horizontally (26/2 = 13)
-            child: Assets.icons.playIcon.image(
-              width: 26,
-              height: 25,
-            ),
-          ),
-
-          /// Bottom Info Container
-          Positioned(
-            top: 181 - 58, // stick at bottom
-            child: Container(
-              width: 353,
-              height: 58,
-              decoration: BoxDecoration(
-                color: const Color(0x1AD9D9D9),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Title + Username
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Dinner Event",
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
-                          height: 1,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        "@zarif143",
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
-                          height: 1,
-                          color: Color(0xFFB0B3B8),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-
-                  /// Views
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "472 views",
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 10,
-                        height: 1,
-                        color: Color(0xFFB0B3B8),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

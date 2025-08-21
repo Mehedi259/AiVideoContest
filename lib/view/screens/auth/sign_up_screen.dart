@@ -4,9 +4,19 @@ import 'package:trope/view/widgets/text_input_box.dart';
 import 'package:trope/view/widgets/password_input.dart';
 import 'package:trope/view/widgets/active_button.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../app/routes/app_routes.dart';
 
+/// SignUpScreen
+/// ----------------------------------------------------
+/// This screen allows users to create a new account.
+/// Includes:
+/// - Username input
+/// - Email input
+/// - Password and Confirm Password fields
+/// - Sign Up button
+/// - Navigation to Sign In screen
+/// - Social login options (Apple / Google)
+/// ----------------------------------------------------
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -24,12 +34,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+
+      /// Prevents content from overlapping with system UI
       body: SafeArea(
+        /// Enables scrolling to avoid overflow on small devices
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              /// Screen Title
               const Text(
                 "Create an account",
                 style: TextStyle(
@@ -39,7 +53,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   color: Color(0xFF004AAD),
                 ),
               ),
+
               const SizedBox(height: 40),
+
+              /// Username Input Field
               TextInputBox(
                 controller: _usernameController,
                 label: "Username",
@@ -49,7 +66,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Assets.icons.user.image(width: 20, height: 20),
                 ),
               ),
+
               const SizedBox(height: 20),
+
+              /// Email Input Field
               TextInputBox(
                 controller: _emailController,
                 label: "Email",
@@ -59,17 +79,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Assets.icons.email.image(width: 20, height: 20),
                 ),
               ),
+
               const SizedBox(height: 20),
+
+              /// Password Input Field
               PasswordInput(
                 controller: _passwordController,
                 label: "Password",
               ),
+
               const SizedBox(height: 20),
+
+              /// Confirm Password Input Field
               PasswordInput(
                 controller: _confirmPasswordController,
                 label: "Confirm Password",
               ),
+
               const SizedBox(height: 30),
+
+              /// Sign Up Button
               ActiveButton(
                 text: "Sign up",
                 onPressed: () {
@@ -80,7 +109,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   print("Confirm Password: ${_confirmPasswordController.text}");
                 },
               ),
+
               const SizedBox(height: 20),
+
+              /// Navigate to Sign In
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -99,7 +131,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 20),
+
+              /// Divider with "Or"
               Row(
                 children: [
                   Expanded(child: Divider(color: Colors.grey.shade700)),
@@ -110,7 +145,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
               ),
+
               const SizedBox(height: 16),
+
+              /// Social Login Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

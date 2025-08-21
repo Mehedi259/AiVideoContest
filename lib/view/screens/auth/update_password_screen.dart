@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../widgets/hover_effect_button.dart';
 
-
 class UpdatePasswordScreen extends StatefulWidget {
   const UpdatePasswordScreen({super.key});
 
@@ -18,6 +17,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
 
+  // Check if both fields are filled
   bool get _isFormFilled =>
       _passwordController.text.isNotEmpty &&
           _confirmController.text.isNotEmpty;
@@ -45,7 +45,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Padding(
+        // Added scroll view for responsiveness on all devices
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +73,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
               const SizedBox(height: 32),
 
-              // Title
+              // Screen title
               const Text(
                 'Set a new password',
                 style: TextStyle(
@@ -85,7 +86,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
               const SizedBox(height: 8),
 
-              // Description
+              // Subtitle / Description
               const Text(
                 'Create a new password. Ensure it differs from previous ones for security',
                 style: TextStyle(
@@ -98,7 +99,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
               const SizedBox(height: 24),
 
-              // Password Label
+              // Password label
               const Text(
                 'Password',
                 style: TextStyle(
@@ -111,7 +112,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
               const SizedBox(height: 8),
 
-              // Password Field
+              // Password input field
               TextField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
@@ -149,7 +150,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
               const SizedBox(height: 20),
 
-              // Confirm Password Label
+              // Confirm Password label
               const Text(
                 'Confirm Password',
                 style: TextStyle(
@@ -162,7 +163,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
               const SizedBox(height: 8),
 
-              // Confirm Password Field
+              // Confirm Password input field
               TextField(
                 controller: _confirmController,
                 obscureText: _obscureConfirmPassword,
@@ -200,18 +201,16 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
               const SizedBox(height: 32),
 
-              // Update Password Button (Using HoverEffectButton)
+              // Update password button
               HoverEffectButton(
                 text: 'Update Password',
                 isActive: _isFormFilled,
                 onTap: _isFormFilled
                     ? () {
-
                   context.push('/success');
                 }
                     : null,
               ),
-
             ],
           ),
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:trope/gen/assets.gen.dart';
 import '../../widgets/active_button.dart';
 
 class PasswordResetScreen extends StatelessWidget {
@@ -11,11 +11,12 @@ class PasswordResetScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView( // Prevents overflow on small screens
           padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Back button (using AssetGen)
               GestureDetector(
                 onTap: () {
                   context.go('/signIn');
@@ -23,14 +24,16 @@ class PasswordResetScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 30,
                   height: 30,
-                  child: Image.asset(
-                    'assets/icons/BackButton.png',
+                  child: Assets.icons.backButton.image(
                     fit: BoxFit.contain,
                     color: Colors.white,
                   ),
                 ),
               ),
+
               const SizedBox(height: 71),
+
+              // Title text
               const Text(
                 'Password reset',
                 style: TextStyle(
@@ -43,9 +46,13 @@ class PasswordResetScreen extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                 ),
               ),
+
               const SizedBox(height: 12),
+
+              // Description text
               const Text(
-                'Your password has been successfully reset. click confirm to set a new password',
+                'Your password has been successfully reset. '
+                    'Click confirm to set a new password.',
                 style: TextStyle(
                   color: Color(0xFFB0B3B8),
                   fontFamily: 'Roboto',
@@ -55,7 +62,10 @@ class PasswordResetScreen extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                 ),
               ),
+
               const SizedBox(height: 50),
+
+              // Confirm button
               SizedBox(
                 width: double.infinity,
                 height: 44,
@@ -66,6 +76,7 @@ class PasswordResetScreen extends StatelessWidget {
                   },
                 ),
               ),
+
               const SizedBox(height: 20),
             ],
           ),

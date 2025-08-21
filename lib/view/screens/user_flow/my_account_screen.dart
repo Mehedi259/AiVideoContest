@@ -17,7 +17,7 @@ class MyAccountScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
+          icon: Assets.icons.arrowLeft.image(width: 22, height: 22),
           onPressed: () {
             GoRouter.of(context).go(Routes.profile);
           },

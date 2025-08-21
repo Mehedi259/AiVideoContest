@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:trope/gen/assets.gen.dart';
-import '../../widgets/navigation_bar.dart';
+
 import '../../../app/routes/app_routes.dart';
+import '../../widgets/navigation_bar.dart';
+import '../../widgets/liked_video_card.dart';
 
 class VotedVideoScreen extends StatelessWidget {
   const VotedVideoScreen({super.key});
@@ -11,98 +13,64 @@ class VotedVideoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+
+      /// AppBar
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.black,
         elevation: 0,
-        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            GoRouter.of(context).go(Routes.profile);
-          }
+          icon: Assets.icons.arrowLeft.image(width: 22, height: 22),
+          onPressed: () => GoRouter.of(context).go(Routes.profile),
         ),
         title: const Text(
           "Voted Video",
           style: TextStyle(
             fontFamily: "Raleway",
-            fontSize: 18,
             fontWeight: FontWeight.w700,
+            fontSize: 18,
             color: Colors.white,
           ),
         ),
       ),
-      body: Padding(
+
+      /// Body (Scrollable)
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Section Title
             const Text(
               "Halloween Theme",
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontFamily: "Raleway",
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+                height: 1.0,
                 color: Color(0xFF004AAD),
               ),
             ),
+            const SizedBox(height: 16),
+
+            /// Video Card (Same style as LikedVideoCard)
+            LikedVideoCard(
+              imagePath: Assets.images.like1.path,
+              title: "Dinner Event",
+              user: "John Doe",
+              views: "472 views",
+              onTap: () {
+                // TODO: navigate to video details
+              },
+            ),
+
             const SizedBox(height: 12),
 
-            /// Voted Video Card
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.black,
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Stack(
-                children: [
-                  /// Thumbnail
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      Assets.images.like4.path,
-                      width: double.infinity,
-                      height: 180,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-
-                  /// Info
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: 45,
-                      color: Colors.black,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            "Dinner Event\n@zarif143",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            "472 views",
-                            style: TextStyle(
-                              color: Color(0xFFB0B3B8),
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
           ],
         ),
       ),
+
+      /// Bottom Navigation Bar
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: 4,
         onTap: (index) {
@@ -124,6 +92,42 @@ class VotedVideoScreen extends StatelessWidget {
               break;
           }
         },
+      ),
+    );
+  }
+
+  /// Reusable Action Button (Delete / Share)
+  Widget _buildActionButton({
+    required Widget icon,
+    required String label,
+    required Color labelColor,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: Colors.grey.shade700, width: 1),
+          color: Colors.transparent,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: "Roboto",
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: labelColor,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

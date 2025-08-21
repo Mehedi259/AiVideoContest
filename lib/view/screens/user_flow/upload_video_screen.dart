@@ -13,7 +13,7 @@ class UploadVideoScreen extends StatefulWidget {
 }
 
 class _UploadVideoScreenState extends State<UploadVideoScreen> {
-  int _currentIndex = 2; // Add Video tab active
+  int _currentIndex = 2; // Upload tab active
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _themeController =
@@ -52,6 +52,13 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Assets.icons.cross.image(width: 30, height: 30),
+          onPressed: () {
+            GoRouter.of(context).go(Routes.home);
+          },
+        ),
         title: const Text(
           "Template",
           style: TextStyle(
@@ -61,107 +68,171 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
             color: Colors.white,
           ),
         ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Upload Video Box
+              // ---------- Upload Video Box ----------
               GestureDetector(
                 onTap: () {
-                  // TODO: Add video picker
+                  debugPrint("Pick video tapped");
                 },
                 child: Container(
                   width: double.infinity,
-                  height: 180,
+                  height: 238,
                   decoration: BoxDecoration(
                     color: const Color(0xFF1C1C1E),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFF3A3A3C)),
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Assets.icons.uploadVideo.image(width: 40, height: 40),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "Upload a Video",
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Colors.white70,
-                          ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Assets.icons.uploadVideo
+                          .image(width: 28, height: 28), // asset gen icon
+                      const SizedBox(height: 12),
+                      const Text(
+                        "Upload a Video",
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: Color(0xFFB0B3B8),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               const SizedBox(height: 24),
 
-              // Title Input
-              TextField(
-                controller: _titleController,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: "Enter video title",
-                  hintStyle: const TextStyle(color: Colors.white38),
-                  filled: true,
-                  fillColor: const Color(0xFF1C1C1E),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
+              // ---------- Upload Thumbnail Box ----------
+              GestureDetector(
+                onTap: () {
+                  debugPrint("Pick thumbnail tapped");
+                },
+                child: Container(
+                  width: 160,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1C1C1E),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Assets.icons.uploadVideo.image(width: 20, height: 20),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "Upload a Cover",
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 10,
+                          color: Color(0xFFB0B3B8),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 32),
 
-              // Theme Input
-              TextField(
-                controller: _themeController,
-                readOnly: true,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: "Theme",
-                  filled: true,
-                  fillColor: const Color(0xFF1C1C1E),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
+              // ---------- Title Input ----------
+              Row(
+                children: [
+                  const Text(
+                    "Title",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                   ),
-                  contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      controller: _titleController,
+                      style: const TextStyle(
+                          color: Colors.white, fontSize: 14, fontFamily: "Roboto"),
+                      decoration: InputDecoration(
+                        hintText: "Enter video title",
+                        hintStyle: const TextStyle(color: Color(0xFFB0B3B8)),
+                        filled: true,
+                        fillColor: const Color(0xFF1C1C1E),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const Spacer(),
+              const SizedBox(height: 24),
 
-              // Upload Button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Implement upload logic
-                  },
-                  icon: Assets.icons.upload.image(width: 24, height: 24),
-                  label: const Text(
-                    "Upload",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              // ---------- Theme Input ----------
+              Row(
+                children: [
+                  const Text(
+                    "Theme",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF004AAD),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      controller: _themeController,
+                      readOnly: true,
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color(0xFF1C1C1E),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
+
+              // ---------- Upload Button ----------
+              Center(
+                child: SizedBox(
+                  width: 208,
+                  height: 43,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      debugPrint("Upload tapped");
+                    },
+                    icon: Assets.icons.upload.image(width: 24, height: 24),
+                    label: const Text(
+                      "Upload",
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF004AAD),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ),

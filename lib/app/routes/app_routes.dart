@@ -21,6 +21,8 @@ class Routes {
   static const uploadedVideos = '/uploadedVideos';
   static const votedVideos = '/votedVideos';
   static const badges = '/badges';
+  static const videoPlay = '/videoPlay';
+  static const notification = '/notification';
 
 
 

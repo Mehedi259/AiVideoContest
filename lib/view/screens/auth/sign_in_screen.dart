@@ -6,6 +6,16 @@ import 'package:trope/view/widgets/password_input.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
 
+/// SignInScreen
+/// ----------------------------------------------------
+/// This screen allows users to sign in using email/password.
+/// Includes:
+/// - Email input field
+/// - Password input field
+/// - Remember me option
+/// - Forget password navigation
+/// - Social login options (Apple / Google)
+/// ----------------------------------------------------
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -22,12 +32,16 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+
+      /// Prevents content from overlapping system UI
       body: SafeArea(
+        /// Enables scrolling on small devices to avoid overflow
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              /// Screen Title
               const Text(
                 "Sign in",
                 style: TextStyle(
@@ -37,7 +51,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   color: Color(0xFF004AAD),
                 ),
               ),
+
               const SizedBox(height: 40),
+
+              /// Email Input Field
               TextInputBox(
                 controller: _emailController,
                 label: "Email",
@@ -47,12 +64,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Assets.icons.email.image(width: 20, height: 20),
                 ),
               ),
+
               const SizedBox(height: 20),
+
+              /// Password Input Field
               PasswordInput(
                 controller: _passwordController,
                 label: "Password",
               ),
+
               const SizedBox(height: 20),
+
+              /// Remember me checkbox & Forget password
               Row(
                 children: [
                   GestureDetector(
@@ -86,7 +109,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 30),
+
+              /// Sign In Button
               ActiveButton(
                 text: "Sign in",
                 onPressed: () {
@@ -95,7 +121,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   print("Password: ${_passwordController.text}");
                 },
               ),
+
               const SizedBox(height: 20),
+
+              /// Navigate to Sign Up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -112,7 +141,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 20),
+
+              /// Divider with "Or"
               Row(
                 children: [
                   Expanded(child: Divider(color: Colors.grey.shade700)),
@@ -123,7 +155,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
               ),
+
               const SizedBox(height: 16),
+
+              /// Social Login Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
