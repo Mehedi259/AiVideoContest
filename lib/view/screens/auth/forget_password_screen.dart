@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trope/gen/assets.gen.dart';
-import 'package:trope/view/widgets/hover_effect_button.dart';
+import 'package:Tright/gen/assets.gen.dart';
+import 'package:Tright/view/widgets/hover_effect_button.dart';
 import '../../../app/routes/app_routes.dart';
 
 class ForgetPassword extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:Tright/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
@@ -96,39 +96,4 @@ class VotedVideoScreen extends StatelessWidget {
     );
   }
 
-  /// Reusable Action Button (Delete / Share)
-  Widget _buildActionButton({
-    required Widget icon,
-    required String label,
-    required Color labelColor,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 40,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: Colors.grey.shade700, width: 1),
-          color: Colors.transparent,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            const SizedBox(width: 6),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: "Roboto",
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-                color: labelColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

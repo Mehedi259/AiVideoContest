@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trope/view/widgets/custom_video_card.dart';
-import 'package:trope/view/widgets/custom_drawer.dart';
-import 'package:trope/view/widgets/navigation_bar.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:Tright/view/widgets/custom_video_card.dart';
+import 'package:Tright/view/widgets/custom_drawer.dart';
+import 'package:Tright/view/widgets/navigation_bar.dart';
+import 'package:Tright/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 
@@ -17,9 +17,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentIndex = 0;
-  bool _showTop3 = false; // toggle state
+  bool _showTop3 = false;
 
-  // Dummy video list
   final List<Map<String, String>> videos = [
     {
       'title': 'Halloween Coffee',
@@ -59,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-  // Dummy Top 3 list
   final List<Map<String, String>> top3Videos = [
     {
       'title': 'Billion View Clip',
@@ -84,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-  // Navigation control
   void _onNavTap(int index) {
     setState(() {
       _currentIndex = index;
@@ -118,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // ---------- Top App Bar ----------
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Row(
@@ -139,20 +135,36 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      GoRouter.of(context).go(Routes.notification);
-                    },
-                    icon: Assets.icons.notification.image(width: 22, height: 22),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          GoRouter.of(context).go(Routes.notification);
+                        },
+                        icon: Assets.icons.notification.image(width: 22, height: 22),
+                      ),
+                      Positioned(
+                        right: 14,
+                        top: 10,
+                        child: Container(
+                          width: 5,
+                          height: 5,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF004AAD),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-
-            // ---------- Theme Tag ----------
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
+                margin: const EdgeInsets.only(left: 20),
                 width: 198,
                 height: 23,
                 decoration: BoxDecoration(
@@ -172,30 +184,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 15),
-
-            // ---------- Scrollable Content ----------
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Banner Image
                     Container(
                       width: 362,
                       height: 129,
                       decoration: BoxDecoration(
+                        color: const Color(0xFF1C1C1E),
                         borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage(Assets.images.themeImage.path),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          Assets.images.themeImage.path,
+                          width: 355,
+                          height: 124.77,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 15),
-
-                    // ---------- Toggle Buttons (All / Top 3) ----------
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -205,10 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         _buildToggleButton("Top 3 Videos", _showTop3),
                       ],
                     ),
-
                     const SizedBox(height: 15),
-
-                    // ---------- Video List ----------
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Wrap(
@@ -220,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: video['title']!,
                             user: video['username']!,
                             views: video['views']!,
-                            rank: video['rank'], // null for normal list
+                            rank: video['rank'],
                             onTap: () {
                               GoRouter.of(context).go(Routes.videoPlay);
                             },
@@ -228,7 +236,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }).toList(),
                       ),
                     ),
-
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -244,7 +251,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // ---------- Custom Toggle Button ----------
   Widget _buildToggleButton(String text, bool active) {
     return GestureDetector(
       onTap: () {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:Tright/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
@@ -52,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.white, // border same as status dot
+                            color: Colors.white,
                             width: 2,
                           ),
                         ),
@@ -86,11 +86,13 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(width: 20),
+
+                  /// Username + Handle + Fire Counter
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "JOHN DOE",
                         style: TextStyle(
                           fontFamily: "Raleway",
@@ -100,13 +102,40 @@ class ProfileScreen extends StatelessWidget {
                           letterSpacing: -0.5,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        "@jhondoe1",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFFB0B3B8),
-                        ),
+                      const SizedBox(height: 4),
+
+                      /// Handle + Fire + Counter
+                      Row(
+                        children: [
+                          const Text(
+                            "@jhondoe1",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFFB0B3B8),
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+
+                          /// Fire Icon
+                          Image.asset(
+                            Assets.icons.fire.path,
+                            width: 9,
+                            height: 11,
+                          ),
+                          const SizedBox(width: 2),
+
+                          /// Counter
+                          const Text(
+                            "12",
+                            style: TextStyle(
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.w400,
+                              fontSize: 11,
+                              height: 12 / 11, // line-height = 12px
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

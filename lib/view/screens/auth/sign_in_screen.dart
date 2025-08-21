@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:trope/gen/assets.gen.dart';
-import 'package:trope/view/widgets/active_button.dart';
-import 'package:trope/view/widgets/text_input_box.dart';
-import 'package:trope/view/widgets/password_input.dart';
+import 'package:Tright/gen/assets.gen.dart';
+import 'package:Tright/view/widgets/active_button.dart';
+import 'package:Tright/view/widgets/text_input_box.dart';
+import 'package:Tright/view/widgets/password_input.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
 
-/// SignInScreen
-/// ----------------------------------------------------
-/// This screen allows users to sign in using email/password.
-/// Includes:
-/// - Email input field
-/// - Password input field
-/// - Remember me option
-/// - Forget password navigation
-/// - Social login options (Apple / Google)
-/// ----------------------------------------------------
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -32,16 +22,12 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-
-      /// Prevents content from overlapping system UI
       body: SafeArea(
-        /// Enables scrolling on small devices to avoid overflow
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              /// Screen Title
               const Text(
                 "Sign in",
                 style: TextStyle(
@@ -51,7 +37,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   color: Color(0xFF004AAD),
                 ),
               ),
-
               const SizedBox(height: 40),
 
               /// Email Input Field
@@ -64,15 +49,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Assets.icons.email.image(width: 20, height: 20),
                 ),
               ),
-
               const SizedBox(height: 20),
 
-              /// Password Input Field
+              /// Password Input Field using PasswordInput widget
               PasswordInput(
                 controller: _passwordController,
                 label: "Password",
               ),
-
               const SizedBox(height: 20),
 
               /// Remember me checkbox & Forget password
@@ -90,7 +73,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(3),
-                        color: _rememberMe ? const Color(0xFF004AAD) : Colors.transparent,
+                        color: _rememberMe
+                            ? const Color(0xFF004AAD)
+                            : Colors.transparent,
                       ),
                       child: _rememberMe
                           ? const Icon(Icons.check, size: 14, color: Colors.white)
@@ -109,7 +94,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30),
 
               /// Sign In Button
@@ -117,11 +101,10 @@ class _SignInScreenState extends State<SignInScreen> {
                 text: "Sign in",
                 onPressed: () {
                   context.go(Routes.home);
-                  print("Email: ${_emailController.text}");
-                  print("Password: ${_passwordController.text}");
+                  debugPrint("Email: ${_emailController.text}");
+                  debugPrint("Password: ${_passwordController.text}");
                 },
               ),
-
               const SizedBox(height: 20),
 
               /// Navigate to Sign Up
@@ -141,7 +124,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
 
               /// Divider with "Or"
@@ -155,7 +137,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
               ),
-
               const SizedBox(height: 16),
 
               /// Social Login Buttons

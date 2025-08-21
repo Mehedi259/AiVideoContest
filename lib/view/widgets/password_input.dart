@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:Tright/gen/assets.gen.dart';
 
 class PasswordInput extends StatefulWidget {
   final TextEditingController controller;
@@ -25,19 +26,21 @@ class _PasswordInputState extends State<PasswordInput> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: widget.label,
-        labelStyle: const TextStyle(color: Colors.white),
+        labelStyle: const TextStyle(color: Colors.white54),
         hintText: "********",
         hintStyle: const TextStyle(color: Colors.grey),
-        suffixIcon: IconButton(
-          icon: Icon(
-            _obscurePassword ? Icons.visibility_off : Icons.visibility,
-            color: Colors.white,
-          ),
-          onPressed: () {
+        suffixIcon: InkWell(
+          onTap: () {
             setState(() {
               _obscurePassword = !_obscurePassword;
             });
           },
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: _obscurePassword
+                ? Assets.icons.eyeOff.image(width: 20, height: 20)
+                : Assets.icons.eye.image(width: 20, height: 20),
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.grey),

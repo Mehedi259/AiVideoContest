@@ -128,6 +128,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/email.png
   AssetGenImage get email => const AssetGenImage('assets/icons/email.png');
 
+  /// File path: assets/icons/eye.png
+  AssetGenImage get eye => const AssetGenImage('assets/icons/eye.png');
+
+  /// File path: assets/icons/eye_off.png
+  AssetGenImage get eyeOff => const AssetGenImage('assets/icons/eye_off.png');
+
+  /// File path: assets/icons/fire.png
+  AssetGenImage get fire => const AssetGenImage('assets/icons/fire.png');
+
   /// File path: assets/icons/flag.png
   AssetGenImage get flag => const AssetGenImage('assets/icons/flag.png');
 
@@ -152,6 +161,10 @@ class $AssetsIconsGen {
   AssetGenImage get notification =>
       const AssetGenImage('assets/icons/notification.png');
 
+  /// File path: assets/icons/notificationDot.png
+  AssetGenImage get notificationDot =>
+      const AssetGenImage('assets/icons/notificationDot.png');
+
   /// File path: assets/icons/pause.png
   AssetGenImage get pause => const AssetGenImage('assets/icons/pause.png');
 
@@ -162,6 +175,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/profile_active_dot.png
   AssetGenImage get profileActiveDot =>
       const AssetGenImage('assets/icons/profile_active_dot.png');
+
+  /// File path: assets/icons/smallLogo.png
+  AssetGenImage get smallLogo =>
+      const AssetGenImage('assets/icons/smallLogo.png');
 
   /// File path: assets/icons/upload.png
   AssetGenImage get upload => const AssetGenImage('assets/icons/upload.png');
@@ -206,6 +223,9 @@ class $AssetsIconsGen {
         dislikeBlue,
         download,
         email,
+        eye,
+        eyeOff,
+        fire,
         flag,
         fullScreen,
         google,
@@ -213,9 +233,11 @@ class $AssetsIconsGen {
         likeWhite,
         logout,
         notification,
+        notificationDot,
         pause,
         playIcon,
         profileActiveDot,
+        smallLogo,
         upload,
         uploadVideo,
         user

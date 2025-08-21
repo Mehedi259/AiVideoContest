@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:Tright/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
@@ -152,7 +152,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 35),
                   Expanded(
                     child: TextField(
                       controller: _titleController,
@@ -226,6 +226,7 @@ class _UploadVideoScreenState extends State<UploadVideoScreen> {
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
+                        color: Colors.white,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(

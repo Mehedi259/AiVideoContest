@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:flutter/services.dart';
+import 'package:Tright/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
@@ -40,7 +41,6 @@ class UploadedVideoScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Section Title
             const Text(
               "Halloween Theme",
               style: TextStyle(
@@ -53,7 +53,6 @@ class UploadedVideoScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            /// Video Card (Same style as LikedVideoCard)
             LikedVideoCard(
               imagePath: Assets.images.like1.path,
               title: "Dinner Event",
@@ -66,7 +65,6 @@ class UploadedVideoScreen extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            /// Action Buttons (Delete & Share) in one Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -87,7 +85,7 @@ class UploadedVideoScreen extends StatelessWidget {
                     label: "Share",
                     labelColor: Colors.white,
                     onTap: () {
-                      // TODO: Share action
+                      _showSharePopup(context);
                     },
                   ),
                 ),
@@ -123,7 +121,7 @@ class UploadedVideoScreen extends StatelessWidget {
     );
   }
 
-  /// Reusable Action Button (Delete / Share)
+  /// Reusable Action Button
   Widget _buildActionButton({
     required Widget icon,
     required String label,
@@ -156,6 +154,98 @@ class UploadedVideoScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  /// Share Popup
+  void _showSharePopup(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return Container(
+          margin: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          height: 120,
+          decoration: BoxDecoration(
+            color: const Color(0xFFB0B3BB),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Share link",
+                style: TextStyle(
+                  fontFamily: "Roboto",
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Color(0xFF1C1C1E),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF141415),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "http://fakeurl.halloween/winner-badge",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(const ClipboardData(
+                        text: "http://fakeurl.halloween/winner-badge",
+                      ));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Link copied to clipboard"),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1C1C1E),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "Copy",
+                        style: TextStyle(
+                          fontFamily: "Roboto",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Color(0xFFFDFDFD),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

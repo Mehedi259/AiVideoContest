@@ -89,167 +89,177 @@ class _VideoDetailScreenState extends State<VideoDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top bar
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => GoRouter.of(context).go(Routes.home),
-                    child: Assets.icons.backButton.image(width: 24, height: 24),
-                  ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    "Halloween Dinner",
-                    style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                        color: Colors.white),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Video Player
-              AspectRatio(
-                aspectRatio:
-                _isVideoReady ? _videoController.value.aspectRatio : 16 / 9,
-                child: _isVideoReady
-                    ? ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Chewie(controller: _chewieController!),
-                )
-                    : const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // Title + Username + Like/Dislike/Report Row
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Title & username
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
+              // App Bar (no margin)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => context.go(Routes.home),
+                      child: Assets.icons.backButton.image(width: 30, height: 30),
+                    ),
+                    const SizedBox(width: 16),
+                    const Expanded(
+                      child: Center(
+                        child: Text(
                           "Halloween Dinner",
                           style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.white),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "@zarif143",
-                          style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
-                              color: Color(0xFFB0B3B8)),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Action buttons
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: _onLikePressed,
-                        child: Column(
-                          children: [
-                            isLiked
-                                ? Assets.icons.like.image(width: 24, height: 24)
-                                : Assets.icons.likeWhite
-                                .image(width: 24, height: 24),
-                            const SizedBox(height: 2),
-                            const Text("Like",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12)),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      GestureDetector(
-                        onTap: _onDislikePressed,
-                        child: Column(
-                          children: [
-                            isDisliked
-                                ? Assets.icons.dislikeBlue
-                                .image(width: 24, height: 24)
-                                : Assets.icons.dislike
-                                .image(width: 24, height: 24),
-                            const SizedBox(height: 2),
-                            const Text("Dislike",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12)),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        children: [
-                          Assets.icons.flag.image(width: 24, height: 24),
-                          const SizedBox(height: 2),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: const Text(
-                              "Report",
-                              style:
-                              TextStyle(color: Colors.white, fontSize: 10),
-                            ),
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: Colors.white,
                           ),
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
-
-              // Vote button (167x134) center aligned
-              Center(
-                child: GestureDetector(
-                  onTap: _onVotePressed,
-                  child: Container(
-                    width: 167,
-                    height: 134,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF004AAD),
-                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    const SizedBox(width: 46),
+                  ],
+                ),
+              ),
+
+              // Content with 20px margin
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    AspectRatio(
+                      aspectRatio:
+                      _isVideoReady ? _videoController.value.aspectRatio : 16 / 9,
+                      child: _isVideoReady
+                          ? ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Chewie(controller: _chewieController!),
+                      )
+                          : const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Assets.images.vote.image(width: 60, height: 60),
-                        const SizedBox(height: 8),
-                        Text(
-                          isVoted ? "Voted" : "Vote",
-                          style: const TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20,
-                              color: Colors.white),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                "Halloween Dinner",
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                "@zarif143",
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                  color: Color(0xFFB0B3B8),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: _onLikePressed,
+                              child: Column(
+                                children: [
+                                  isLiked
+                                      ? Assets.icons.like.image(width: 24, height: 24)
+                                      : Assets.icons.likeWhite.image(width: 24, height: 24),
+                                  const SizedBox(height: 2),
+                                  const Text(
+                                    "Like",
+                                    style: TextStyle(color: Colors.white, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            GestureDetector(
+                              onTap: _onDislikePressed,
+                              child: Column(
+                                children: [
+                                  isDisliked
+                                      ? Assets.icons.dislikeBlue.image(width: 24, height: 24)
+                                      : Assets.icons.dislike.image(width: 24, height: 24),
+                                  const SizedBox(height: 2),
+                                  const Text(
+                                    "Dislike",
+                                    style: TextStyle(color: Colors.white, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              children: [
+                                Assets.icons.flag.image(width: 24, height: 24),
+                                const SizedBox(height: 2),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: const Text(
+                                    "Report",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 10),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 40),
+                    Center(
+                      child: GestureDetector(
+                        onTap: _onVotePressed,
+                        child: Container(
+                          width: 167,
+                          height: 134,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF004AAD),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Assets.images.vote.image(width: 60, height: 60),
+                              const SizedBox(height: 8),
+                              Text(
+                                isVoted ? "Voted" : "Vote",
+                                style: const TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
       ),
-
-      // Bottom Navigation Bar
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: 0,
         onTap: (index) {

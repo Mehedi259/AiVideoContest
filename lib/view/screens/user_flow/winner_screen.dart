@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:Tright/gen/assets.gen.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
 import 'package:go_router/go_router.dart';

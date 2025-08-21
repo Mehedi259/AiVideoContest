@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:Tright/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
@@ -88,7 +88,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Container(
                         width: double.infinity, // full width
-                        height: 70,
+                        height: 100,
                         decoration: BoxDecoration(
                           color: Colors.grey[900],
                           borderRadius: BorderRadius.circular(5),

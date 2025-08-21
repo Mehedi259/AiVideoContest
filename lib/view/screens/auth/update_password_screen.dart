@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/routes/app_routes.dart';
 import '../../widgets/hover_effect_button.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
@@ -54,7 +55,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
               // Back button
               InkWell(
                 onTap: () {
-                  context.pop();
+                  GoRouter.of(context).go(Routes.passwordReset);
                 },
                 borderRadius: BorderRadius.circular(20),
                 child: Container(

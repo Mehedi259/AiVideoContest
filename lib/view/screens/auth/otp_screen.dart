@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:trope/gen/assets.gen.dart';
+import 'package:Tright/gen/assets.gen.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/hover_effect_button.dart';
 import 'package:go_router/go_router.dart';
