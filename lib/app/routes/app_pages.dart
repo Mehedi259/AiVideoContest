@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-
 import '../../view/screens/auth/password_updated_success_screen.dart';
 import '../../view/screens/auth/reset_confirm_screen.dart';
 import '../../view/screens/auth/welcome_screen.dart';
@@ -27,12 +25,10 @@ import '../../view/screens/user_flow/voted_video_screen.dart';
 import '../../view/screens/user_flow/winner_screen.dart';
 import 'app_routes.dart';
 
-String _timestamp() {
-  return DateFormat('HH:mm:ss').format(DateTime.now());
-}
+
 
 void _logRouteChange(String name, String path) {
-  debugPrint('[ROUTE] ${_timestamp()} → $name ($path)');
+  debugPrint('[ROUTE]  → $name ($path)');
 }
 
 class AppPages {

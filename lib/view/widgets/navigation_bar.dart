@@ -67,62 +67,64 @@ class CustomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return SizedBox(
-      width: double.infinity,
-      height: 80,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Positioned.fill(
-            child: Container(color: const Color(0xFF1C1C1E)),
+    return SafeArea(
+      bottom: true,
+      child: Container(
+        color: const Color(0xFF1C1C1E),
+        padding: const EdgeInsets.only(bottom: 8),
+        child: SizedBox(
+          width: double.infinity,
+          height: 80,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              _buildNavItem(
+                index: 0,
+                icon: currentIndex == 0
+                    ? Assets.icons.activeHome.image(width: 30, height: 30)
+                    : Assets.icons.inActiveHome.image(width: 30, height: 30),
+                isActive: currentIndex == 0,
+                top: 30,
+                left: width * 0.07,
+              ),
+              _buildNavItem(
+                index: 1,
+                icon: currentIndex == 1
+                    ? Assets.icons.activeLike.image(width: 30, height: 30)
+                    : Assets.icons.inActiveLike.image(width: 30, height: 30),
+                isActive: currentIndex == 1,
+                top: 30,
+                left: width * 0.27,
+              ),
+              _buildNavItem(
+                index: 2,
+                icon: Assets.icons.inActiveAddVideo.image(width: 20, height: 20),
+                isActive: currentIndex == 2,
+                top: -20,
+                left: width * 0.5 - 30,
+                isCenter: true,
+              ),
+              _buildNavItem(
+                index: 3,
+                icon: currentIndex == 3
+                    ? Assets.icons.activeWinner.image(width: 30, height: 30)
+                    : Assets.icons.inActiveAddWinner.image(width: 30, height: 30),
+                isActive: currentIndex == 3,
+                top: 30,
+                left: width * 0.68,
+              ),
+              _buildNavItem(
+                index: 4,
+                icon: currentIndex == 4
+                    ? Assets.icons.activeProfile.image(width: 30, height: 30)
+                    : Assets.icons.inActiveProfile.image(width: 30, height: 30),
+                isActive: currentIndex == 4,
+                top: 30,
+                left: width * 0.88,
+              ),
+            ],
           ),
-          _buildNavItem(
-            index: 0,
-            icon: currentIndex == 0
-                ? Assets.icons.activeHome.image(width: 30, height: 30)
-                : Assets.icons.inActiveHome.image(width: 30, height: 30),
-            isActive: currentIndex == 0,
-            top: 30,
-            left: width * 0.07,
-          ),//
-          _buildNavItem(
-            index: 1,
-            icon: currentIndex == 1
-                ? Assets.icons.activeLike.image(width: 30, height: 30)
-                : Assets.icons.inActiveLike.image(width: 30, height: 30),
-            isActive: currentIndex == 1,
-            top: 30,
-            left: width * 0.27,
-          ),
-          _buildNavItem(
-            index: 2,
-            icon: currentIndex == 2
-                ? Assets.icons.inActiveAddVideo.image(width: 20, height: 20)
-                : Assets.icons.inActiveAddVideo.image(width: 20, height: 20),
-            isActive: currentIndex == 2,
-            top: -20,
-            left: width * 0.5 - 30,
-            isCenter: true,
-          ),
-          _buildNavItem(
-            index: 3,
-            icon: currentIndex == 3
-                ? Assets.icons.activeWinner.image(width: 30, height: 30)
-                : Assets.icons.inActiveAddWinner.image(width: 30, height: 30),
-            isActive: currentIndex == 3,
-            top: 30,
-            left: width * 0.68,
-          ),
-          _buildNavItem(
-            index: 4,
-            icon: currentIndex == 4
-                ? Assets.icons.activeProfile.image(width: 30, height: 30)
-                : Assets.icons.inActiveProfile.image(width: 30, height: 30),
-            isActive: currentIndex == 4,
-            top: 30,
-            left: width * 0.88,
-          ),
-        ],
+        ),
       ),
     );
   }
