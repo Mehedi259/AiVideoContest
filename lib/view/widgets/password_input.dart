@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Tright/gen/assets.gen.dart';
+import 'package:Prommt/gen/assets.gen.dart';
 
 class PasswordInput extends StatefulWidget {
   final TextEditingController controller;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:Tright/gen/assets.gen.dart';
-import 'package:Tright/view/widgets/active_button.dart';
+import 'package:Prommt/gen/assets.gen.dart';
+import 'package:Prommt/view/widgets/active_button.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
 

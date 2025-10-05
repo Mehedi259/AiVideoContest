@@ -1,4 +1,4 @@
-name: Tright
+name: Prommt
 description: "AI video contest"
 
 publish_to: 'none'
@@ -49,6 +49,8 @@ dependencies:
   pin_code_fields: ^8.0.1
   video_player: ^2.10.0
   chewie: ^1.12.1
+  shared_preferences: ^2.5.3
+  http: ^1.5.0
 
 dev_dependencies:
   flutter_test:

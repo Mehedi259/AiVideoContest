@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../view/screens/auth/otp_screen_after_registration.dart';
 import '../../view/screens/auth/password_updated_success_screen.dart';
 import '../../view/screens/auth/reset_confirm_screen.dart';
+import '../../view/screens/auth/update_password_screen.dart';
 import '../../view/screens/auth/welcome_screen.dart';
 import '../../view/screens/auth/sign_in_screen.dart';
 import '../../view/screens/auth/sign_up_screen.dart';
 import '../../view/screens/auth/forget_password_screen.dart';
 import '../../view/screens/auth/otp_screen.dart';
-import '../../view/screens/auth/update_password_screen.dart';
 import '../../view/screens/user_flow/badges_screen.dart';
 import '../../view/screens/user_flow/change_password_screen.dart';
 import '../../view/screens/user_flow/competetion_rules_screen.dart';
@@ -24,8 +25,6 @@ import '../../view/screens/user_flow/uploaded_video_screen.dart';
 import '../../view/screens/user_flow/voted_video_screen.dart';
 import '../../view/screens/user_flow/winner_screen.dart';
 import 'app_routes.dart';
-
-
 
 void _logRouteChange(String name, String path) {
   debugPrint('[ROUTE]  → $name ($path)');
@@ -59,8 +58,15 @@ class AppPages {
           return const SignUpScreen();
         },
       ),
-
-      // *** Add forgetPassword route here ***
+      GoRoute(
+        path: Routes.OtpScreenAfterRegistration,
+        name: 'OtpScreenAfterRegistration Screen',
+        builder: (context, state) {
+          _logRouteChange('OtpScreenAfterRegistration Screen', state.uri.toString());
+          final email = state.extra as String? ?? '';
+          return OtpScreenAfterRegistration(email: email);
+        },
+      ),
       GoRoute(
         path: Routes.forgetPassword,
         name: 'Forget Password Screen',
@@ -74,7 +80,8 @@ class AppPages {
         name: 'OTP Screen',
         builder: (context, state) {
           _logRouteChange('OTP Screen', state.uri.toString());
-          return const OtpScreen(email: '',);
+          final email = state.extra as String? ?? '';
+          return OtpScreen(email: email);
         },
       ),
       GoRoute(
@@ -90,7 +97,8 @@ class AppPages {
         name: 'Update Password Screen',
         builder: (context, state) {
           _logRouteChange('Update Password Screen', state.uri.toString());
-          return const UpdatePasswordScreen();
+          final resetToken = state.extra as String?;
+          return UpdatePasswordScreen(resetToken: resetToken);
         },
       ),
       GoRoute(
@@ -185,13 +193,6 @@ class AppPages {
         path: Routes.notification,
         builder: (context, state) => const NotificationScreen(),
       ),
-
-
-
-
-
-
-
     ],
   );
 }

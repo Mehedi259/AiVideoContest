@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Tright/gen/assets.gen.dart'; // FlutterGen import
+import 'package:Prommt/gen/assets.gen.dart'; // FlutterGen import
 import '../../../app/routes/app_routes.dart';
 import '../../widgets/navigation_bar.dart';
 import '../../widgets/success_dialog.dart';
@@ -149,7 +149,7 @@ class ChangePasswordScreen extends StatelessWidget {
           obscureText: true,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            hintText: "********",
+            hintText: "",
             hintStyle: const TextStyle(color: Color(0xFFB0B3B8)),
             filled: true,
             fillColor: const Color(0xFF1E1E1E),

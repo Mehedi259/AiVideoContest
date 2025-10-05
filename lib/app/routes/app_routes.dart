@@ -4,6 +4,7 @@ class Routes {
   static const signUp = '/signUp';
   static const forgetPassword = '/forgetPassword';
   static const otp = '/otp';
+  static const OtpScreenAfterRegistration = '/OtpScreenAfterRegistration';
   static const passwordReset = '/passwordReset';
   static const updatePassword = '/updatePassword';
   static const success = '/success';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
-import 'package:Tright/gen/assets.gen.dart'; // FlutterGen import
+import 'package:Prommt/gen/assets.gen.dart'; // FlutterGen import
 
 class SuccessDialog extends StatelessWidget {
   final String message;

@@ -3,24 +3,24 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:Prommt/gen/assets.gen.dart';
 import '../../../app/routes/app_routes.dart';
-import '../../../controllers/otp_controller.dart';
+import '../../../controllers/otp_after_registration_controller.dart';
 import '../../widgets/hover_effect_button.dart';
 import 'package:go_router/go_router.dart';
 
-class OtpScreen extends StatefulWidget {
+class OtpScreenAfterRegistration extends StatefulWidget {
   final String email;
 
-  const OtpScreen({
+  const OtpScreenAfterRegistration({
     Key? key,
     required this.email,
   }) : super(key: key);
 
   @override
-  State<OtpScreen> createState() => _OtpScreenState();
+  State<OtpScreenAfterRegistration> createState() => _OtpScreenAfterRegistrationState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
-  final OtpController controller = Get.put(OtpController());
+class _OtpScreenAfterRegistrationState extends State<OtpScreenAfterRegistration> {
+  final OtpAfterRegistrationController controller = Get.put(OtpAfterRegistrationController());
   bool isOtpComplete = false;
 
   @override
@@ -124,8 +124,8 @@ class _OtpScreenState extends State<OtpScreen> {
                     if (success) {
                       // Pass reset token to update password screen
                       context.push(
-                        Routes.updatePassword,
-                        extra: controller.getResetToken(),
+                        Routes.signIn,
+                        //extra: controller.getResetToken(),
                       );
                     }
                   }

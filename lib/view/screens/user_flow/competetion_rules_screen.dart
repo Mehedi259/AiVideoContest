@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Tright/gen/assets.gen.dart';
+import 'package:Prommt/gen/assets.gen.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/routes/app_routes.dart';
@@ -91,7 +91,7 @@ class _CompetetionRulesScreenState extends State<CompetetionRulesScreen> {
                       child: Assets.images.themeImage.image(
                         width: double.infinity,
                         height: 127,
-                        fit: BoxFit.cover,
+                        //fit: BoxFit.cover,
                       ),
                     ),
                     const SizedBox(height: 24),

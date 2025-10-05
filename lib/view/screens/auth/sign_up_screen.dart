@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:Tright/gen/assets.gen.dart';
-import 'package:Tright/view/widgets/text_input_box.dart';
-import 'package:Tright/view/widgets/password_input.dart';
-import 'package:Tright/view/widgets/active_button.dart';
+import 'package:get/get.dart';
+import 'package:Prommt/gen/assets.gen.dart';
+import 'package:Prommt/view/widgets/text_input_box.dart';
+import 'package:Prommt/view/widgets/password_input.dart';
+import 'package:Prommt/view/widgets/active_button.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/sign_up_controller.dart';
 
-/// SignUpScreen
-/// ----------------------------------------------------
-/// This screen allows users to create a new account.
-/// Includes:
-/// - Username input
-/// - Email input
-/// - Password and Confirm Password fields
-/// - Sign Up button
-/// - Navigation to Sign In screen
-/// - Social login options (Apple / Google)
-/// ----------------------------------------------------
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -25,26 +16,18 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final TextEditingController _fullnameController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final SignUpController controller = Get.put(SignUpController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-
-      /// Prevents content from overlapping with system UI
       body: SafeArea(
-        /// Enables scrolling to avoid overflow on small devices
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              /// Screen Title
               const Text(
                 "Create an account",
                 style: TextStyle(
@@ -54,12 +37,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   color: Color(0xFF004AAD),
                 ),
               ),
-
               const SizedBox(height: 40),
 
               /// Full Name Input Field
               TextInputBox(
-                controller: _fullnameController,
+                controller: controller.fullnameController,
                 label: "Full Name",
                 hintText: "Enter your full name",
                 suffixIcon: Padding(
@@ -67,12 +49,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Assets.icons.user.image(width: 20, height: 20),
                 ),
               ),
-
               const SizedBox(height: 20),
 
               /// Username Input Field
               TextInputBox(
-                controller: _usernameController,
+                controller: controller.usernameController,
                 label: "Username",
                 hintText: "Enter your user name",
                 suffixIcon: Padding(
@@ -80,12 +61,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Assets.icons.user.image(width: 20, height: 20),
                 ),
               ),
-
               const SizedBox(height: 20),
 
               /// Email Input Field
               TextInputBox(
-                controller: _emailController,
+                controller: controller.emailController,
                 label: "Email",
                 hintText: "Enter your email",
                 suffixIcon: Padding(
@@ -93,45 +73,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Assets.icons.email.image(width: 20, height: 20),
                 ),
               ),
-
               const SizedBox(height: 20),
 
               /// Password Input Field
               PasswordInput(
-                controller: _passwordController,
+                controller: controller.passwordController,
                 label: "Password",
               ),
-
               const SizedBox(height: 20),
 
               /// Confirm Password Input Field
               PasswordInput(
-                controller: _confirmPasswordController,
+                controller: controller.confirmPasswordController,
                 label: "Confirm Password",
               ),
-
               const SizedBox(height: 30),
 
-              /// Sign Up Button
-              ActiveButton(
+              /// Sign Up Button with Loading State
+              Obx(() => controller.isLoading.value
+                  ? const CircularProgressIndicator(color: Color(0xFF004AAD))
+                  : ActiveButton(
                 text: "Sign up",
-                onPressed: () {
-                  GoRouter.of(context).go(Routes.signIn);
-                  print("Fullname: ${_fullnameController.text}");
-                  print("Username: ${_usernameController.text}");
-                  print("Email: ${_emailController.text}");
-                  print("Password: ${_passwordController.text}");
-                  print("Confirm Password: ${_confirmPasswordController.text}");
+                onPressed: () async {
+                  final success = await controller.register();
+                  if (success) {
+                    GoRouter.of(context).push(
+                      Routes.OtpScreenAfterRegistration,
+                      extra: controller.emailController.text.trim(),
+                    );
+                  }
                 },
-              ),
-
+              )),
               const SizedBox(height: 20),
 
               /// Navigate to Sign In
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Do you have an account?", style: TextStyle(color: Colors.white)),
+                  const Text("Do you have an account?",
+                      style: TextStyle(color: Colors.white)),
                   GestureDetector(
                     onTap: () {
                       GoRouter.of(context).go(Routes.signIn);
@@ -146,7 +126,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
 
               /// Divider with "Or"
@@ -160,7 +139,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
               ),
-
               const SizedBox(height: 16),
 
               /// Social Login Buttons

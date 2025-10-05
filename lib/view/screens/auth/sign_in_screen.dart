@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:Tright/gen/assets.gen.dart';
-import 'package:Tright/view/widgets/active_button.dart';
-import 'package:Tright/view/widgets/text_input_box.dart';
-import 'package:Tright/view/widgets/password_input.dart';
+import 'package:get/get.dart';
+import 'package:Prommt/gen/assets.gen.dart';
+import 'package:Prommt/view/widgets/active_button.dart';
+import 'package:Prommt/view/widgets/text_input_box.dart';
+import 'package:Prommt/view/widgets/password_input.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/sign_in_controller.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -14,9 +16,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _rememberMe = false;
+  final SignInController controller = Get.put(SignInController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
               /// Email Input Field
               TextInputBox(
-                controller: _emailController,
+                controller: controller.emailController,
                 label: "Email",
                 hintText: "Enter your email",
                 suffixIcon: Padding(
@@ -51,9 +51,9 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 20),
 
-              /// Password Input Field using PasswordInput widget
+              /// Password Input Field
               PasswordInput(
-                controller: _passwordController,
+                controller: controller.passwordController,
                 label: "Password",
               ),
               const SizedBox(height: 20),
@@ -61,32 +61,30 @@ class _SignInScreenState extends State<SignInScreen> {
               /// Remember me checkbox & Forget password
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _rememberMe = !_rememberMe;
-                      });
-                    },
+                  Obx(() => GestureDetector(
+                    onTap: () => controller.toggleRememberMe(),
                     child: Container(
                       width: 18,
                       height: 18,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(3),
-                        color: _rememberMe
+                        color: controller.rememberMe.value
                             ? const Color(0xFF004AAD)
                             : Colors.transparent,
                       ),
-                      child: _rememberMe
-                          ? const Icon(Icons.check, size: 14, color: Colors.white)
+                      child: controller.rememberMe.value
+                          ? const Icon(Icons.check,
+                          size: 14, color: Colors.white)
                           : null,
                     ),
-                  ),
+                  )),
                   const SizedBox(width: 8),
-                  const Text("Remember me", style: TextStyle(color: Colors.white)),
+                  const Text("Remember me",
+                      style: TextStyle(color: Colors.white)),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () => context.push('/forgetPassword'),
+                    onTap: () => context.push(Routes.forgetPassword),
                     child: const Text(
                       "Forget password?",
                       style: TextStyle(color: Color(0xFF004AAD)),
@@ -96,22 +94,24 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 30),
 
-              /// Sign In Button
-              ActiveButton(
+              /// Sign In Button with Loading State
+              Obx(() => controller.isLoading.value
+                  ? const CircularProgressIndicator(
+                  color: Color(0xFF004AAD))
+                  : ActiveButton(
                 text: "Sign in",
-                onPressed: () {
-                  context.go(Routes.home);
-                  debugPrint("Email: ${_emailController.text}");
-                  debugPrint("Password: ${_passwordController.text}");
+                onPressed: () async {
+                  await controller.login(context: context);
                 },
-              ),
+              )),
               const SizedBox(height: 20),
 
               /// Navigate to Sign Up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Do you have an account?", style: TextStyle(color: Colors.white)),
+                  const Text("Do you have an account?",
+                      style: TextStyle(color: Colors.white)),
                   GestureDetector(
                     onTap: () => context.push(Routes.signUp),
                     child: const Text(
@@ -132,7 +132,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Text("Or", style: TextStyle(color: Colors.white)),
+                    child:
+                    Text("Or", style: TextStyle(color: Colors.white)),
                   ),
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
@@ -143,9 +144,13 @@ class _SignInScreenState extends State<SignInScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InkWell(onTap: () {}, child: Assets.icons.apple.image(height: 48)),
+                  InkWell(
+                      onTap: () {},
+                      child: Assets.icons.apple.image(height: 48)),
                   const SizedBox(width: 24),
-                  InkWell(onTap: () {}, child: Assets.icons.google.image(height: 48)),
+                  InkWell(
+                      onTap: () {},
+                      child: Assets.icons.google.image(height: 48)),
                 ],
               ),
             ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Tright/view/widgets/custom_video_card.dart';
-import 'package:Tright/view/widgets/custom_drawer.dart';
-import 'package:Tright/view/widgets/navigation_bar.dart';
-import 'package:Tright/gen/assets.gen.dart';
+import 'package:Prommt/view/widgets/custom_video_card.dart';
+import 'package:Prommt/view/widgets/custom_drawer.dart';
+import 'package:Prommt/view/widgets/navigation_bar.dart';
+import 'package:Prommt/gen/assets.gen.dart';
 
 import '../../../app/routes/app_routes.dart';
 
@@ -190,19 +190,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     Container(
-                      width: 362,
-                      height: 129,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1C1C1E),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        //borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
                           Assets.images.themeImage.path,
-                          width: 355,
+                          width: double.infinity,
                           height: 124.77,
-                          fit: BoxFit.cover,
+                          //fit: BoxFit.cover,
                         ),
                       ),
                     ),

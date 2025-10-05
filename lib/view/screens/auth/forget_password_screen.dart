@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Tright/gen/assets.gen.dart';
-import 'package:Tright/view/widgets/hover_effect_button.dart';
+import 'package:Prommt/gen/assets.gen.dart';
+import 'package:Prommt/view/widgets/hover_effect_button.dart';
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/forget_password_controller.dart';
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({super.key});
@@ -12,25 +14,17 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-  final TextEditingController _emailController = TextEditingController();
+  final ForgetPasswordController controller = Get.put(ForgetPasswordController());
   bool isButtonActive = false;
 
   @override
   void initState() {
     super.initState();
-    // Listen for text changes to enable/disable button dynamically
-    _emailController.addListener(() {
+    controller.emailController.addListener(() {
       setState(() {
-        isButtonActive = _emailController.text.trim().isNotEmpty;
+        isButtonActive = controller.emailController.text.trim().isNotEmpty;
       });
     });
-  }
-
-  @override
-  void dispose() {
-    // Dispose controller to free memory
-    _emailController.dispose();
-    super.dispose();
   }
 
   @override
@@ -38,11 +32,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        // Scrollable body for preventing overflow on small devices
         child: SingleChildScrollView(
           child: Stack(
             children: [
-              // Back button (top-left)
               Positioned(
                 top: 30,
                 left: 30,
@@ -54,16 +46,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   ),
                 ),
               ),
-
-              // Main content
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 21),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 138),
-
-                    // Screen title
                     const Text(
                       'Forgot password',
                       style: TextStyle(
@@ -76,8 +64,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       ),
                     ),
                     const SizedBox(height: 8),
-
-                    // Instruction text
                     const Text(
                       'Please enter your email to reset the password',
                       style: TextStyle(
@@ -90,8 +76,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       ),
                     ),
                     const SizedBox(height: 24),
-
-                    // Email field label
                     const Text(
                       'Your Email',
                       style: TextStyle(
@@ -104,8 +88,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       ),
                     ),
                     const SizedBox(height: 8),
-
-                    // Email input box
                     Container(
                       width: double.infinity,
                       height: 56,
@@ -119,7 +101,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.symmetric(horizontal: 22),
                       child: TextField(
-                        controller: _emailController,
+                        controller: controller.emailController,
                         style: const TextStyle(
                           fontFamily: 'Roboto',
                           fontWeight: FontWeight.w500,
@@ -146,20 +128,28 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     ),
                     const SizedBox(height: 26),
 
-                    // Reset password button
-                    HoverEffectButton(
+                    /// Reset button with loading state
+                    Obx(() => controller.isLoading.value
+                        ? const Center(
+                        child: CircularProgressIndicator(
+                            color: Color(0xFF004AAD)))
+                        : HoverEffectButton(
                       isActive: isButtonActive,
-                      onTap: () {
+                      onTap: () async {
                         if (isButtonActive) {
-                          GoRouter.of(context).push(
-                            Routes.otp,
-                            extra: _emailController.text.trim(),
-                          );
+                          final success =
+                          await controller.sendResetPasswordEmail();
+                          if (success) {
+                            GoRouter.of(context).push(
+                              Routes.otp,
+                              extra: controller.emailController.text.trim(),
+                            );
+                          }
                         }
                       },
                       text: 'Reset Password',
-                    ),
-                    const SizedBox(height: 20), // Extra padding for bottom spacing
+                    )),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),

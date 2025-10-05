@@ -1,43 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/update_password_controller.dart';
 import '../../widgets/hover_effect_button.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
-  const UpdatePasswordScreen({super.key});
+  final String? resetToken;
+
+  const UpdatePasswordScreen({super.key, this.resetToken});
 
   @override
   State<UpdatePasswordScreen> createState() => _UpdatePasswordScreenState();
 }
 
 class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
+  final UpdatePasswordController controller = Get.put(UpdatePasswordController());
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmController = TextEditingController();
-
-  // Check if both fields are filled
-  bool get _isFormFilled =>
-      _passwordController.text.isNotEmpty &&
-          _confirmController.text.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-    _passwordController.addListener(_onFormChange);
-    _confirmController.addListener(_onFormChange);
+    if (widget.resetToken != null) {
+      controller.setResetToken(widget.resetToken!);
+    }
+    controller.passwordController.addListener(_onFormChange);
+    controller.confirmPasswordController.addListener(_onFormChange);
   }
 
   void _onFormChange() => setState(() {});
 
-  @override
-  void dispose() {
-    _passwordController.dispose();
-    _confirmController.dispose();
-    super.dispose();
-  }
+  bool get _isFormFilled =>
+      controller.passwordController.text.isNotEmpty &&
+          controller.confirmPasswordController.text.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +42,14 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        // Added scroll view for responsiveness on all devices
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Back button
+              /// Back button
               InkWell(
-                onTap: () {
-                  GoRouter.of(context).go(Routes.passwordReset);
-                },
+                onTap: () => Navigator.pop(context),
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
                   padding: const EdgeInsets.all(6),
@@ -71,10 +64,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 32),
 
-              // Screen title
+              /// Screen title
               const Text(
                 'Set a new password',
                 style: TextStyle(
@@ -84,10 +76,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   fontFamily: 'Raleway',
                 ),
               ),
-
               const SizedBox(height: 8),
 
-              // Subtitle / Description
+              /// Subtitle
               const Text(
                 'Create a new password. Ensure it differs from previous ones for security',
                 style: TextStyle(
@@ -97,10 +88,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   fontFamily: 'Roboto',
                 ),
               ),
-
               const SizedBox(height: 24),
 
-              // Password label
+              /// Password label
               const Text(
                 'Password',
                 style: TextStyle(
@@ -110,12 +100,11 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   fontFamily: 'Roboto',
                 ),
               ),
-
               const SizedBox(height: 8),
 
-              // Password input field
+              /// Password input field
               TextField(
-                controller: _passwordController,
+                controller: controller.passwordController,
                 obscureText: _obscurePassword,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -148,10 +137,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
               ),
-
               const SizedBox(height: 20),
 
-              // Confirm Password label
+              /// Confirm Password label
               const Text(
                 'Confirm Password',
                 style: TextStyle(
@@ -161,12 +149,11 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   fontFamily: 'Roboto',
                 ),
               ),
-
               const SizedBox(height: 8),
 
-              // Confirm Password input field
+              /// Confirm Password input field
               TextField(
-                controller: _confirmController,
+                controller: controller.confirmPasswordController,
                 obscureText: _obscureConfirmPassword,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -199,19 +186,25 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
               ),
-
               const SizedBox(height: 32),
 
-              // Update password button
-              HoverEffectButton(
+              /// Update password button with loading state
+              Obx(() => controller.isLoading.value
+                  ? const Center(
+                  child:
+                  CircularProgressIndicator(color: Color(0xFF004AAD)))
+                  : HoverEffectButton(
                 text: 'Update Password',
                 isActive: _isFormFilled,
                 onTap: _isFormFilled
-                    ? () {
-                  context.push('/success');
+                    ? () async {
+                  final success = await controller.updatePassword();
+                  if (success) {
+                    context.push(Routes.success);
+                  }
                 }
                     : null,
-              ),
+              )),
             ],
           ),
         ),

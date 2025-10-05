@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Tright/gen/assets.gen.dart';
+import 'package:Prommt/gen/assets.gen.dart';
 import '../../widgets/active_button.dart';
 
 class PasswordResetScreen extends StatelessWidget {
