@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Prommt/view/widgets/custom_video_card.dart';
 import 'package:Prommt/view/widgets/custom_drawer.dart';
 import 'package:Prommt/view/widgets/navigation_bar.dart';
 import 'package:Prommt/gen/assets.gen.dart';
-
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,71 +17,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final HomeController controller = Get.put(HomeController());
   int _currentIndex = 0;
-  bool _showTop3 = false;
-
-  final List<Map<String, String>> videos = [
-    {
-      'title': 'Halloween Coffee',
-      'username': '@piash374',
-      'views': '7M views',
-      'image': Assets.images.videoOne.path,
-    },
-    {
-      'title': 'Night House',
-      'username': '@junaid982',
-      'views': '10M views',
-      'image': Assets.images.videoTwo.path,
-    },
-    {
-      'title': 'Halloween Event',
-      'username': '@farab039',
-      'views': '500K views',
-      'image': Assets.images.videoThree.path,
-    },
-    {
-      'title': 'Halloween Event',
-      'username': '@mehedi039',
-      'views': '1B views',
-      'image': Assets.images.videoFour.path,
-    },
-    {
-      'title': 'Halloween Event',
-      'username': '@farab039',
-      'views': '263K views',
-      'image': Assets.images.videoOne.path,
-    },
-    {
-      'title': 'Halloween Event',
-      'username': '@farab039',
-      'views': '284K views',
-      'image': Assets.images.videoTwo.path,
-    },
-  ];
-
-  final List<Map<String, String>> top3Videos = [
-    {
-      'title': 'Billion View Clip',
-      'username': '@mehedi039',
-      'views': '1B views',
-      'image': Assets.images.videoFour.path,
-      'rank': 'Top 1',
-    },
-    {
-      'title': 'Night House',
-      'username': '@junaid982',
-      'views': '10M views',
-      'image': Assets.images.videoTwo.path,
-      'rank': 'Top 2',
-    },
-    {
-      'title': 'Halloween Coffee',
-      'username': '@piash374',
-      'views': '7M views',
-      'image': Assets.images.videoOne.path,
-      'rank': 'Top 3',
-    },
-  ];
 
   void _onNavTap(int index) {
     setState(() {
@@ -115,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            // 🔹 Top bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Row(
@@ -161,79 +100,137 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: const EdgeInsets.only(left: 20),
-                width: 198,
-                height: 23,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  border: Border.all(color: const Color(0xFF004AAD), width: 1),
-                ),
-                child: const Center(
-                  child: Text(
-                    "Halloween Theme",
-                    style: TextStyle(
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Colors.white,
+
+            // 🔹 Theme name (reactive)
+            Obx(() {
+              if (controller.themeName.value != null) {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    height: 23,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      border: Border.all(color: const Color(0xFF004AAD), width: 1),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 15),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      child: ClipRRect(
-                        //borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          Assets.images.themeImage.path,
-                          width: double.infinity,
-                          height: 124.77,
-                          //fit: BoxFit.cover,
+                    child: Center(
+                      child: Text(
+                        controller.themeName.value!,
+                        style: const TextStyle(
+                          fontFamily: 'Raleway',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            }),
+
+            const SizedBox(height: 15),
+
+            // 🔹 Video List Section
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(
+                    child: CircularProgressIndicator(color: Color(0xFF004AAD)),
+                  );
+                }
+
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await controller.loadVideos();
+                    await controller.loadLeaderboard();
+                  },
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
                       children: [
-                        const SizedBox(width: 15),
-                        _buildToggleButton("All Videos", !_showTop3),
-                        const SizedBox(width: 10),
-                        _buildToggleButton("Top 3 Videos", _showTop3),
+                        // 🔹 Cover image
+                        Obx(() {
+                          if (controller.themeCoverImage.value != null) {
+                            return ClipRRect(
+                              child: Image.network(
+                                controller.themeCoverImage.value!,
+                                width: double.infinity,
+                                height: 124.77,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: double.infinity,
+                                    height: 124.77,
+                                    color: Colors.grey[900],
+                                    child: const Icon(Icons.image, color: Colors.grey),
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        }),
+
+                        const SizedBox(height: 15),
+
+                        // 🔹 Toggle buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 15),
+                            _buildToggleButton("All Videos", !controller.showTop3.value),
+                            const SizedBox(width: 10),
+                            _buildToggleButton("Top 3 Videos", controller.showTop3.value),
+                          ],
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        // 🔹 Videos
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Wrap(
+                            spacing: 15,
+                            runSpacing: 15,
+                            children: (controller.showTop3.value
+                                ? controller.top3Videos
+                                : controller.videos)
+                                .asMap()
+                                .entries
+                                .map((entry) {
+                              final index = entry.key;
+                              final video = entry.value;
+
+                              String? rank;
+                              if (controller.showTop3.value && index < 3) {
+                                rank = 'Top ${index + 1}';
+                              }
+
+                              return CustomVideoCard(
+                                imagePath: video.thumbnail,
+                                title: video.title,
+                                user: '@${video.user.username}',
+                                views: '${video.views} views',
+                                rank: rank,
+                                onTap: () async {
+                                  await controller.recordView(video.id);
+                                  GoRouter.of(context).go(
+                                    '${Routes.videoPlay}?id=${video.id}',
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
-                    const SizedBox(height: 15),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Wrap(
-                        spacing: 15,
-                        runSpacing: 15,
-                        children: (_showTop3 ? top3Videos : videos).map((video) {
-                          return CustomVideoCard(
-                            imagePath: video['image']!,
-                            title: video['title']!,
-                            user: video['username']!,
-                            views: video['views']!,
-                            rank: video['rank'],
-                            onTap: () {
-                              GoRouter.of(context).go(Routes.videoPlay);
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              }),
             ),
           ],
         ),
@@ -248,9 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildToggleButton(String text, bool active) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _showTop3 = text == "Top 3 Videos";
-        });
+        controller.toggleView();
       },
       child: Container(
         width: text == "All Videos" ? 104 : 116,

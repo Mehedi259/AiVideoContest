@@ -187,7 +187,12 @@ class AppPages {
       ),
       GoRoute(
         path: Routes.videoPlay,
-        builder: (context, state) => const VideoDetailScreen(),
+        name: 'Video Play Screen',
+        builder: (context, state) {
+          _logRouteChange('Video Play Screen', state.uri.toString());
+          final videoId = int.tryParse(state.uri.queryParameters['id'] ?? '0') ?? 0;
+          return VideoDetailScreen(videoId: videoId);
+        },
       ),
       GoRoute(
         path: Routes.notification,

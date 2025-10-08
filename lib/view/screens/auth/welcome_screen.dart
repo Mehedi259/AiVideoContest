@@ -33,8 +33,8 @@ class WelcomeScreen extends StatelessWidget {
                 /// App Logo
                 Center(
                   child: Assets.images.mainLogo.image(
-                    width: 194.68,
-                    height: 76.91,
+                    width: 170,
+                    height: 124,
                   ),
                 ),
 
