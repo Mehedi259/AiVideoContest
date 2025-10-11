@@ -26,7 +26,7 @@ class ApiService {
       developer.log('📥 Response Status: ${response.statusCode}', name: 'ApiService');
       developer.log('📥 Response Body: ${response.body}', name: 'ApiService');
 
-      return _processResponse(response);
+      return processResponse(response);
     } catch (e) {
       developer.log('❌ POST Error: $e', name: 'ApiService');
       throw Exception("POST request error: $e");
@@ -51,7 +51,7 @@ class ApiService {
       developer.log('📥 Response Status: ${response.statusCode}', name: 'ApiService');
       developer.log('📥 Response Body: ${response.body}', name: 'ApiService');
 
-      return _processResponse(response);
+      return processResponse(response);
     } catch (e) {
       developer.log('❌ GET Error: $e', name: 'ApiService');
       throw Exception("GET request error: $e");
@@ -104,7 +104,7 @@ class ApiService {
       final streamedResponse = await request.send();
       final response = await http.Response.fromStream(streamedResponse);
 
-      return _processResponse(response);
+      return processResponse(response);
     } catch (e) {
       developer.log('❌ Multipart PUT Error: $e', name: 'ApiService');
       throw Exception("Multipart PUT request error: $e");
@@ -125,8 +125,8 @@ class ApiService {
     return headers;
   }
 
-  /// Response Handler
-  static dynamic _processResponse(http.Response response) {
+  /// ✅ Public Response Handler (previously _processResponse)
+  static dynamic processResponse(http.Response response) {
     final statusCode = response.statusCode;
 
     if (statusCode >= 200 && statusCode < 305) {

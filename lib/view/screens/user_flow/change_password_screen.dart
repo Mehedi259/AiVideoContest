@@ -1,25 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:Prommt/gen/assets.gen.dart'; // FlutterGen import
+import 'package:Prommt/gen/assets.gen.dart';
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/changed_password_controller.dart';
 import '../../widgets/navigation_bar.dart';
-import '../../widgets/success_dialog.dart';
+import '../../widgets/password_input.dart';
 
-class ChangePasswordScreen extends StatelessWidget {
+class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
+
+  @override
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+}
+
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  late ChangePasswordController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(ChangePasswordController());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-
-      /// Custom AppBar with back arrow (Arrow-Left.png from FlutterGen)
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
           icon: Assets.icons.arrowLeft.image(width: 22, height: 22),
-          onPressed: () => GoRouter.of(context).go(Routes.myAccount),
+          onPressed: () => context.go(Routes.myAccount),
         ),
         centerTitle: true,
         title: const Text(
@@ -32,61 +45,69 @@ class ChangePasswordScreen extends StatelessWidget {
           ),
         ),
       ),
-
-      /// Scrollable body
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Instruction Text
             const Text(
-              "Enter your old password and set a new one to regain access.",
+              "Enter your current password and choose a new password",
               style: TextStyle(
-                fontFamily: "Raleway",
-                fontSize: 13,
+                fontFamily: "Roboto",
                 fontWeight: FontWeight.w400,
+                fontSize: 14,
                 color: Color(0xFFB0B3B8),
               ),
             ),
             const SizedBox(height: 24),
 
-            /// Old Password
-            _buildPasswordField(label: "Old Password"),
-
+            /// Current Password
+            PasswordInput(
+              controller: controller.currentPasswordController,
+              label: "Current Password",
+            ),
             const SizedBox(height: 20),
 
             /// New Password
-            _buildPasswordField(label: "New Password"),
-
+            PasswordInput(
+              controller: controller.newPasswordController,
+              label: "New Password",
+            ),
             const SizedBox(height: 20),
 
-            /// Confirm Password
-            _buildPasswordField(label: "Confirm Password"),
-
+            /// Confirm New Password
+            PasswordInput(
+              controller: controller.confirmPasswordController,
+              label: "Confirm New Password",
+            ),
             const SizedBox(height: 32),
 
-            /// Update Button
-            SizedBox(
+            /// Change Password Button
+            Obx(() => SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => const SuccessDialog(
-                      message: "Password changed successfully",
-                    ),
-                  );
-                },
+                onPressed: controller.isLoading.value
+                    ? null
+                    : controller.changePassword,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF004AAD),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 14),
+                  disabledBackgroundColor: Colors.grey,
                 ),
-                child: const Text(
-                  "Update",
+                child: controller.isLoading.value
+                    ? const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                    strokeWidth: 2,
+                  ),
+                )
+                    : const Text(
+                  "Change Password",
                   style: TextStyle(
                     fontFamily: "Raleway",
                     fontWeight: FontWeight.w600,
@@ -95,71 +116,32 @@ class ChangePasswordScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
+            )),
           ],
         ),
       ),
-
-      /// Bottom Navigation Bar
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: 4,
         onTap: (index) {
           switch (index) {
             case 0:
-              GoRouter.of(context).go(Routes.home);
+              context.go(Routes.home);
               break;
             case 1:
-              GoRouter.of(context).go(Routes.likedVideos);
+              context.go(Routes.likedVideos);
               break;
             case 2:
-              GoRouter.of(context).go(Routes.uploadVideos);
+              context.go(Routes.uploadVideos);
               break;
             case 3:
-              GoRouter.of(context).go(Routes.winner);
+              context.go(Routes.winner);
               break;
             case 4:
-              GoRouter.of(context).go(Routes.profile);
+              context.go(Routes.profile);
               break;
           }
         },
       ),
-    );
-  }
-
-  /// Reusable password field widget with label and placeholder
-  Widget _buildPasswordField({required String label}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        /// Field Label
-        Text(
-          label,
-          style: const TextStyle(
-            fontFamily: "Roboto",
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-            color: Colors.white,
-            height: 1.0, // line-height: 100%
-          ),
-        ),
-        const SizedBox(height: 8),
-
-        /// Password Input Field
-        TextField(
-          obscureText: true,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: "",
-            hintStyle: const TextStyle(color: Color(0xFFB0B3B8)),
-            filled: true,
-            fillColor: const Color(0xFF1E1E1E),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFF333333)),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

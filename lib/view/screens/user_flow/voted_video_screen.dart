@@ -1,27 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Prommt/gen/assets.gen.dart';
-
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/voted_video_controller.dart';
 import '../../widgets/navigation_bar.dart';
 import '../../widgets/liked_video_card.dart';
 
-class VotedVideoScreen extends StatelessWidget {
+class VotedVideoScreen extends StatefulWidget {
   const VotedVideoScreen({super.key});
 
   @override
+  State<VotedVideoScreen> createState() => _VotedVideoScreenState();
+}
+
+class _VotedVideoScreenState extends State<VotedVideoScreen> {
+  late VotedVideoController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(VotedVideoController());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final baseUrl = "http://10.10.7.86:8000";
+
     return Scaffold(
       backgroundColor: Colors.black,
-
-      /// AppBar
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
           icon: Assets.icons.arrowLeft.image(width: 22, height: 22),
-          onPressed: () => GoRouter.of(context).go(Routes.profile),
+          onPressed: () => context.go(Routes.profile),
         ),
         title: const Text(
           "Voted Video",
@@ -33,67 +47,91 @@ class VotedVideoScreen extends StatelessWidget {
           ),
         ),
       ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xFF004AAD)),
+          );
+        }
 
-      /// Body (Scrollable)
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /// Section Title
-            const Text(
-              "Halloween Theme",
-              style: TextStyle(
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
-                height: 1.0,
-                color: Color(0xFF004AAD),
-              ),
+        if (controller.votedVideos.isEmpty) {
+          return const Center(
+            child: Text(
+              'No voted videos yet',
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-            const SizedBox(height: 16),
+          );
+        }
 
-            /// Video Card (Same style as LikedVideoCard)
-            LikedVideoCard(
-              imagePath: Assets.images.like1.path,
-              title: "Dinner Event",
-              user: "John Doe",
-              views: "472 views",
-              onTap: () {
-                // TODO: navigate to video details
-              },
-            ),
+        return RefreshIndicator(
+          onRefresh: controller.refreshVotedVideos,
+          color: const Color(0xFF004AAD),
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            itemCount: controller.votedVideos.length,
+            itemBuilder: (context, index) {
+              final votedVideo = controller.votedVideos[index];
+              final video = votedVideo.video;
+              final thumbnailUrl = video.thumbnail.startsWith('http')
+                  ? video.thumbnail
+                  : '$baseUrl${video.thumbnail}';
 
-            const SizedBox(height: 12),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (index == 0)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(
+                        video.themeName,
+                        style: const TextStyle(
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Color(0xFF004AAD),
+                        ),
+                      ),
+                    ),
 
-          ],
-        ),
-      ),
+                  LikedVideoCard(
+                    imagePath: thumbnailUrl,
+                    title: video.title,
+                    user: video.user.username,
+                    views: "${video.views} views",
+                    onTap: () {
+                      context.go('${Routes.videoPlay}?id=${video.id}');
+                    },
+                  ),
 
-      /// Bottom Navigation Bar
+                  const SizedBox(height: 24),
+                ],
+              );
+            },
+          ),
+        );
+      }),
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: 4,
         onTap: (index) {
           switch (index) {
             case 0:
-              GoRouter.of(context).go(Routes.home);
+              context.go(Routes.home);
               break;
             case 1:
-              GoRouter.of(context).go(Routes.likedVideos);
+              context.go(Routes.likedVideos);
               break;
             case 2:
-              GoRouter.of(context).go(Routes.uploadVideos);
+              context.go(Routes.uploadVideos);
               break;
             case 3:
-              GoRouter.of(context).go(Routes.winner);
+              context.go(Routes.winner);
               break;
             case 4:
-              GoRouter.of(context).go(Routes.profile);
+              context.go(Routes.profile);
               break;
           }
         },
       ),
     );
   }
-
 }

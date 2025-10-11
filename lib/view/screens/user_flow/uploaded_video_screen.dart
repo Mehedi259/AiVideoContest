@@ -1,28 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:Prommt/gen/assets.gen.dart';
-
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/uploaded_video_controller.dart';
 import '../../widgets/navigation_bar.dart';
 import '../../widgets/liked_video_card.dart';
 
-class UploadedVideoScreen extends StatelessWidget {
+class UploadedVideoScreen extends StatefulWidget {
   const UploadedVideoScreen({super.key});
 
   @override
+  State<UploadedVideoScreen> createState() => _UploadedVideoScreenState();
+}
+
+class _UploadedVideoScreenState extends State<UploadedVideoScreen> {
+  late UploadedVideoController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(UploadedVideoController());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final baseUrl = "http://10.10.7.86:8000";
+
     return Scaffold(
       backgroundColor: Colors.black,
-
-      /// AppBar
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
           icon: Assets.icons.arrowLeft.image(width: 22, height: 22),
-          onPressed: () => GoRouter.of(context).go(Routes.profile),
+          onPressed: () => context.go(Routes.profile),
         ),
         title: const Text(
           "Uploaded Video",
@@ -34,86 +48,111 @@ class UploadedVideoScreen extends StatelessWidget {
           ),
         ),
       ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xFF004AAD)),
+          );
+        }
 
-      /// Body (Scrollable)
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Halloween Theme",
-              style: TextStyle(
-                fontFamily: "Raleway",
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
-                height: 1.0,
-                color: Color(0xFF004AAD),
-              ),
+        if (controller.uploadedVideos.isEmpty) {
+          return const Center(
+            child: Text(
+              'No uploaded videos yet',
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-            const SizedBox(height: 16),
+          );
+        }
 
-            LikedVideoCard(
-              imagePath: Assets.images.like1.path,
-              title: "Dinner Event",
-              user: "John Doe",
-              views: "472 views",
-              onTap: () {
-                // TODO: navigate to video details
-              },
-            ),
+        return RefreshIndicator(
+          onRefresh: controller.refreshUploadedVideos,
+          color: const Color(0xFF004AAD),
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            itemCount: controller.uploadedVideos.length,
+            itemBuilder: (context, index) {
+              final video = controller.uploadedVideos[index];
+              final thumbnailUrl = video.thumbnail.startsWith('http')
+                  ? video.thumbnail
+                  : '$baseUrl${video.thumbnail}';
 
-            const SizedBox(height: 12),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (index == 0)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(
+                        video.themeName,
+                        style: const TextStyle(
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Color(0xFF004AAD),
+                        ),
+                      ),
+                    ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: _buildActionButton(
-                    icon: Assets.icons.delete.image(width: 20, height: 20),
-                    label: "Delete",
-                    labelColor: Colors.red,
+                  LikedVideoCard(
+                    imagePath: thumbnailUrl,
+                    title: video.title,
+                    user: video.user!.username,
+                    views: "${video.views} views",
                     onTap: () {
-                      // TODO: Delete action
+                      context.go('${Routes.videoPlay}?id=${video.id}');
                     },
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildActionButton(
-                    icon: Assets.icons.bxShare.image(width: 20, height: 20),
-                    label: "Share",
-                    labelColor: Colors.white,
-                    onTap: () {
-                      _showSharePopup(context);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
 
-      /// Bottom Navigation Bar
+                  const SizedBox(height: 12),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: _buildActionButton(
+                          icon: Assets.icons.delete.image(width: 20, height: 20),
+                          label: "Delete",
+                          labelColor: Colors.red,
+                          onTap: () => controller.deleteVideo(video.id),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: _buildActionButton(
+                          icon: Assets.icons.bxShare.image(width: 20, height: 20),
+                          label: "Share",
+                          labelColor: Colors.white,
+                          onTap: () => _showSharePopup(context, video.id),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+                ],
+              );
+            },
+          ),
+        );
+      }),
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: 4,
         onTap: (index) {
           switch (index) {
             case 0:
-              GoRouter.of(context).go(Routes.home);
+              context.go(Routes.home);
               break;
             case 1:
-              GoRouter.of(context).go(Routes.likedVideos);
+              context.go(Routes.likedVideos);
               break;
             case 2:
-              GoRouter.of(context).go(Routes.uploadVideos);
+              context.go(Routes.uploadVideos);
               break;
             case 3:
-              GoRouter.of(context).go(Routes.winner);
+              context.go(Routes.winner);
               break;
             case 4:
-              GoRouter.of(context).go(Routes.profile);
+              context.go(Routes.profile);
               break;
           }
         },
@@ -121,7 +160,6 @@ class UploadedVideoScreen extends StatelessWidget {
     );
   }
 
-  /// Reusable Action Button
   Widget _buildActionButton({
     required Widget icon,
     required String label,
@@ -157,8 +195,10 @@ class UploadedVideoScreen extends StatelessWidget {
     );
   }
 
-  /// Share Popup
-  void _showSharePopup(BuildContext context) {
+
+  void _showSharePopup(BuildContext context, int videoId) {
+    final shareUrl = "http://10.10.7.86:8000/video/$videoId";
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -196,9 +236,9 @@ class UploadedVideoScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "http://fakeurl.halloween/winner-badge",
-                        style: TextStyle(
+                      child: Text(
+                        shareUrl,
+                        style: const TextStyle(
                           fontFamily: "Roboto",
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
@@ -211,15 +251,14 @@ class UploadedVideoScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   GestureDetector(
                     onTap: () {
-                      Clipboard.setData(const ClipboardData(
-                        text: "http://fakeurl.halloween/winner-badge",
-                      ));
+                      Clipboard.setData(ClipboardData(text: shareUrl));
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Link copied to clipboard"),
                           duration: Duration(seconds: 2),
                         ),
                       );
+                      Navigator.pop(context);
                     },
                     child: Container(
                       height: 40,

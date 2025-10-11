@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../gen/assets.gen.dart';
+import '../../../controllers/badges_controller.dart';
 import '../../widgets/navigation_bar.dart';
 import '../../../app/routes/app_routes.dart';
 
-class BadgeScreen extends StatelessWidget {
+class BadgeScreen extends StatefulWidget {
   const BadgeScreen({super.key});
+
+  @override
+  State<BadgeScreen> createState() => _BadgeScreenState();
+}
+
+class _BadgeScreenState extends State<BadgeScreen> {
+  late BadgeController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = Get.put(BadgeController());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-
-      /// Top AppBar
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => GoRouter.of(context).go(Routes.profile),
+          onPressed: () => context.go(Routes.profile),
         ),
         title: const Text(
           "Badge",
@@ -31,146 +45,147 @@ class BadgeScreen extends StatelessWidget {
           ),
         ),
       ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(color: Color(0xFF004AAD)),
+          );
+        }
 
-      /// Main Content
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: Column(
-          children: [
-            /// Badge Container
-            Container(
-              width: double.infinity,
-              height: 339,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1C1C1E),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Column(
+        if (controller.badges.isEmpty) {
+          return const Center(
+            child: Text(
+              'No badges available yet',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: controller.refreshBadges,
+          color: const Color(0xFF004AAD),
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            itemCount: controller.badges.length,
+            itemBuilder: (context, index) {
+              final badge = controller.badges[index];
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
-
-                  /// Main Logo (top-right aligned)
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: Image.asset(
-                        Assets.icons.smallLogo.path,
-                        width: 52,
-                        height: 21,
-                      ),
+                  Text(
+                    badge.message,
+                    style: const TextStyle(
+                      fontFamily: 'Raleway',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white,
                     ),
                   ),
-
                   const SizedBox(height: 12),
 
-                  /// Congratulations Title
-                  const Text(
-                    "Congratulations",
-                    style: TextStyle(
-                      fontFamily: "Sail",
-                      fontSize: 32,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      height: 1,
+
+
+                  const SizedBox(height: 20),
+
+                  /// Badge Image
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.grey[900],
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  /// Congratulation Image
-                  Image.asset(
-                    Assets.images.congratulation.path,
-                    width: 256,
-                    height: 157,
-                    fit: BoxFit.contain,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  /// Description Text
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      "'From the shadows, you rose... With 769 votes the Halloween throne is yours!'",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: "Roboto",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        height: 1.2,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            /// Download Button
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: 123,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: const Color(0x1C1C1E),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(8),
-                  onTap: () {
-                    // TODO: Implement download functionality
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        Assets.icons.download.path,
-                        width: 24,
-                        height: 24,
-                      ),
-                      const SizedBox(width: 6),
-                      const Text(
-                        "Download",
-                        style: TextStyle(
-                          fontFamily: "Roboto",
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: CachedNetworkImage(
+                        imageUrl: badge.picture,
+                        fit: BoxFit.contain,
+                        placeholder: (context, url) => Container(
+                          height: 300,
+                          color: Colors.grey[800],
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xFF004AAD),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          height: 300,
+                          color: Colors.grey[800],
+                          child: const Icon(
+                            Icons.error_outline,
+                            color: Colors.white,
+                            size: 40,
+                          ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
 
-      /// Bottom Navigation Bar
+                  const SizedBox(height: 24),
+
+                  /// Download Button
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 140,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1C1C1E),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: () => controller.downloadBadge(badge.download),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Assets.icons.download.image(width: 24, height: 24),
+                            const SizedBox(width: 8),
+                            const Text(
+                              "Download",
+                              style: TextStyle(
+                                fontFamily: "Roboto",
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  if (index < controller.badges.length - 1)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24),
+                      child: Divider(color: Colors.grey),
+                    ),
+                ],
+              );
+            },
+          ),
+        );
+      }),
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: 4,
         onTap: (index) {
           switch (index) {
             case 0:
-              GoRouter.of(context).go(Routes.home);
+              context.go(Routes.home);
               break;
             case 1:
-              GoRouter.of(context).go(Routes.likedVideos);
+              context.go(Routes.likedVideos);
               break;
             case 2:
-              GoRouter.of(context).go(Routes.uploadVideos);
+              context.go(Routes.uploadVideos);
               break;
             case 3:
-              GoRouter.of(context).go(Routes.winner);
+              context.go(Routes.winner);
               break;
             case 4:
-              GoRouter.of(context).go(Routes.profile);
+              context.go(Routes.profile);
               break;
           }
         },
