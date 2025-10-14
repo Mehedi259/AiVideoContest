@@ -11,15 +11,40 @@ class HomeController extends GetxController {
   final top3Videos = <VideoModel>[].obs;
   final errorMessage = ''.obs;
 
-  // 👉 Reactive variables (previously normal Strings)
+  // 👉 Reactive variables for theme
   final themeName = RxnString();
   final themeCoverImage = RxnString();
 
   @override
   void onInit() {
     super.onInit();
+    loadActiveTheme();
     loadVideos();
     loadLeaderboard();
+  }
+
+  /// Load active theme from themes API
+  Future<void> loadActiveTheme() async {
+    try {
+      final result = await HomeService.fetchActiveTheme();
+
+      if (result['success'] == true) {
+        themeName.value = result['theme_name'];
+        themeCoverImage.value = result['theme_cover_image'];
+
+        developer.log(
+          '✅ Theme loaded: ${themeName.value}',
+          name: 'HomeController',
+        );
+      } else {
+        developer.log(
+          '⚠️ No active theme found',
+          name: 'HomeController',
+        );
+      }
+    } catch (e) {
+      developer.log('❌ Load Theme Error: $e', name: 'HomeController');
+    }
   }
 
   /// Load all videos
@@ -32,13 +57,6 @@ class HomeController extends GetxController {
 
       if (result['success'] == true) {
         videos.value = result['videos'] as List<VideoModel>;
-
-        // Set theme info from first video
-        if (videos.isNotEmpty) {
-          themeName.value = videos.first.themeName;
-          themeCoverImage.value = videos.first.themeCoverImageUrl;
-        }
-
         developer.log('✅ Loaded ${videos.length} videos', name: 'HomeController');
       } else {
         errorMessage.value = result['message'] ?? 'Failed to load videos';
@@ -76,8 +94,12 @@ class HomeController extends GetxController {
     showTop3.value = !showTop3.value;
   }
 
-  /// Record video view
-  Future<void> recordView(int videoId) async {
-    await HomeService.recordView(videoId);
+  /// Refresh all data
+  Future<void> refreshAll() async {
+    await Future.wait([
+      loadActiveTheme(),
+      loadVideos(),
+      loadLeaderboard(),
+    ]);
   }
 }

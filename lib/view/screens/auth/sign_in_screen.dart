@@ -39,8 +39,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 40),
 
-              /// Email Input Field
-              TextInputBox(
+              Obx(() => TextInputBox(
                 controller: controller.emailController,
                 label: "Email",
                 hintText: "Enter your email",
@@ -48,17 +47,17 @@ class _SignInScreenState extends State<SignInScreen> {
                   padding: const EdgeInsets.all(12.0),
                   child: Assets.icons.email.image(width: 20, height: 20),
                 ),
-              ),
+                errorText: controller.emailError.value,
+              )),
               const SizedBox(height: 20),
 
-              /// Password Input Field
-              PasswordInput(
+              Obx(() => PasswordInput(
                 controller: controller.passwordController,
                 label: "Password",
-              ),
+                errorText: controller.passwordError.value,
+              )),
               const SizedBox(height: 20),
 
-              /// Remember me checkbox & Forget password
               Row(
                 children: [
                   Obx(() => GestureDetector(
@@ -94,7 +93,6 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 30),
 
-              /// Sign In Button with Loading State
               Obx(() => controller.isLoading.value
                   ? const CircularProgressIndicator(
                   color: Color(0xFF004AAD))
@@ -106,7 +104,6 @@ class _SignInScreenState extends State<SignInScreen> {
               )),
               const SizedBox(height: 20),
 
-              /// Navigate to Sign Up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -126,21 +123,18 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 20),
 
-              /// Divider with "Or"
               Row(
                 children: [
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8),
-                    child:
-                    Text("Or", style: TextStyle(color: Colors.white)),
+                    child: Text("Or", style: TextStyle(color: Colors.white)),
                   ),
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
               ),
               const SizedBox(height: 16),
 
-              /// Social Login Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

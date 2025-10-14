@@ -101,13 +101,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            // 🔹 Theme name (reactive)
+            // 🔹 Theme name
             Obx(() {
               if (controller.themeName.value != null) {
                 return Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
                   child: Container(
-                    margin: const EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(left: 20, right: 20),
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     height: 23,
                     decoration: BoxDecoration(
@@ -151,20 +151,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        // 🔹 Cover image
+                        // 🔹 Rounded Cover Image with BoxFit.cover
                         Obx(() {
                           if (controller.themeCoverImage.value != null) {
                             return ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
                               child: Image.network(
                                 controller.themeCoverImage.value!,
                                 width: double.infinity,
                                 height: 124.77,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Container(
                                     width: double.infinity,
                                     height: 124.77,
-                                    color: Colors.grey[900],
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.grey[900],
+                                    ),
                                     child: const Icon(Icons.image, color: Colors.grey),
                                   );
                                 },
@@ -189,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         const SizedBox(height: 15),
 
-                        // 🔹 Videos
+                        // 🔹 Video Cards
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Wrap(
@@ -216,10 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 views: '${video.views} views',
                                 rank: rank,
                                 onTap: () async {
-                                  await controller.recordView(video.id);
-                                  GoRouter.of(context).go(
-                                    '${Routes.videoPlay}?id=${video.id}',
-                                  );
+                                  GoRouter.of(context)
+                                      .go('${Routes.videoPlay}?id=${video.id}');
                                 },
                               );
                             }).toList(),

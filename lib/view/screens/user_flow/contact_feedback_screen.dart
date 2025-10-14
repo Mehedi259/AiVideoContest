@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:Prommt/gen/assets.gen.dart';
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/contact_feedback_controller.dart';
 import '../../widgets/navigation_bar.dart';
 import '../../widgets/custom_drawer.dart';
 
@@ -14,7 +16,14 @@ class ContactFeedbackScreen extends StatefulWidget {
 
 class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final TextEditingController _messageController = TextEditingController();
   int _currentIndex = 0;
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
 
   void _onNavTap(int index) {
     setState(() {
@@ -40,6 +49,34 @@ class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
     }
   }
 
+  Future<void> _submitFeedback() async {
+    final controller = context.read<ContactFeedbackController>();
+    final success = await controller.submitFeedback(_messageController.text);
+
+    if (success && mounted) {
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Feedback submitted successfully!'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      // Clear the text field
+      _messageController.clear();
+    } else if (mounted && controller.error != null) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(controller.error!),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +86,7 @@ class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // 🔹 Top AppBar (same as competition screen)
+            // Top AppBar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Row(
@@ -72,12 +109,12 @@ class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 46), // balance back button
+                  const SizedBox(width: 46),
                 ],
               ),
             ),
 
-            // 🔹 Scrollable content
+            // Scrollable content
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -86,43 +123,50 @@ class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
                   children: [
                     const SizedBox(height: 20),
 
-                    // 📝 Name Field
-                    _buildField(label: "Name", hint: "Enter your name"),
-                    const SizedBox(height: 20),
-
-                    // 📧 Email Field
-                    _buildField(label: "Email", hint: "Enter your email"),
-                    const SizedBox(height: 20),
-
-                    // 💬 Message Field
+                    // Message Field
                     _buildField(
                       label: "Message",
                       hint: "Write down your message",
                       maxLines: 5,
+                      controller: _messageController,
                     ),
                     const SizedBox(height: 40),
 
-                    // 🚀 Send Button
+                    // Send Button
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF004AAD),
-                          minimumSize: const Size(274, 44),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          "Send",
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
+                      child: Consumer<ContactFeedbackController>(
+                        builder: (context, controller, child) {
+                          return ElevatedButton(
+                            onPressed: controller.isLoading ? null : _submitFeedback,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF004AAD),
+                              disabledBackgroundColor: const Color(0xFF004AAD),
+                              minimumSize: const Size(274, 44),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              elevation: 0,
+                            ),
+                            child: controller.isLoading
+                                ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                                : const Text(
+                              "Send",
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -133,7 +177,6 @@ class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
         ),
       ),
 
-      // 🔹 Bottom Navigation
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onNavTap,
@@ -141,10 +184,10 @@ class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
     );
   }
 
-  /// 🔹 Custom Input Field Builder
   Widget _buildField({
     required String label,
     required String hint,
+    required TextEditingController controller,
     int maxLines = 1,
   }) {
     return Column(
@@ -161,6 +204,7 @@ class _ContactFeedbackScreenState extends State<ContactFeedbackScreen> {
         ),
         const SizedBox(height: 8),
         TextField(
+          controller: controller,
           maxLines: maxLines,
           style: const TextStyle(color: Colors.white, fontSize: 14),
           decoration: InputDecoration(

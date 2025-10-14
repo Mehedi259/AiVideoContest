@@ -106,16 +106,16 @@ class _UploadedVideoScreenState extends State<UploadedVideoScreen> {
                   const SizedBox(height: 12),
 
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Expanded(
-                        child: _buildActionButton(
-                          icon: Assets.icons.delete.image(width: 20, height: 20),
-                          label: "Delete",
-                          labelColor: Colors.red,
-                          onTap: () => controller.deleteVideo(video.id),
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: _buildActionButton(
+                      //     icon: Assets.icons.delete.image(width: 20, height: 20),
+                      //     label: "Delete",
+                      //     labelColor: Colors.red,
+                      //     onTap: () => controller.deleteVideo(video.id),
+                      //   ),
+                      // ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: _buildActionButton(

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Prommt/gen/assets.gen.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import '../../../app/routes/app_routes.dart';
+import '../../../main.dart';
 import '../../widgets/navigation_bar.dart';
 import '../../widgets/custom_drawer.dart';
 
@@ -16,6 +19,15 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentIndex = 0;
+
+  // 🔹 Screen notification list
+  List<String> notifications = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleDailyNotification();
+  }
 
   void _onNavTap(int index) {
     setState(() {
@@ -39,6 +51,40 @@ class _NotificationScreenState extends State<NotificationScreen> {
         context.go(Routes.profile);
         break;
     }
+  }
+
+  // 🔹 Add notification to screen
+  void _addNotificationToScreen(String message) {
+    setState(() {
+      notifications.insert(0, message); // newest on top
+    });
+  }
+
+  // 🔹 Schedule daily notification
+  Future<void> _scheduleDailyNotification() async {
+    const notificationMessage =
+        "Your vote is now available, so you can cast it.";
+
+    // Add immediately to screen for first run
+    _addNotificationToScreen(notificationMessage);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'Daily Reminder',
+      notificationMessage,
+      tz.TZDateTime.now(tz.local).add(const Duration(hours: 24)), // 24h from now
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'daily_channel_id',
+          'Daily Notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+          icon: '@mipmap/ic_launcher',
+        ),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.time, // repeat daily
+    );
   }
 
   @override
@@ -80,14 +126,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
             // 🔹 Scrollable notifications
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              child: notifications.isEmpty
+                  ? const Center(
+                child: Text(
+                  "No notifications yet",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+                  : SingleChildScrollView(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: Column(
-                  children: List.generate(5, (index) {
+                  children: List.generate(notifications.length, (index) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Container(
-                        width: double.infinity, // full width
+                        width: double.infinity,
                         height: 100,
                         decoration: BoxDecoration(
                           color: Colors.grey[900],
@@ -96,33 +150,34 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         child: Row(
                           children: [
                             const SizedBox(width: 10),
-                            // Notification icon
-                            Assets.icons.notification.image(width: 16, height: 16),
+                            Assets.icons.notification.image(
+                                width: 16, height: 16),
                             const SizedBox(width: 10),
-                            // Message & time
                             Expanded(
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
                                   Text(
-                                    "Your vote is now available, so you can cast it.",
-                                    style: TextStyle(
+                                    notifications[index],
+                                    style: const TextStyle(
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14,
-                                      height: 1.64, // line-height approx 23px
+                                      height: 1.64,
                                       color: Colors.white,
                                     ),
                                   ),
-                                  SizedBox(height: 2),
+                                  const SizedBox(height: 2),
                                   Text(
-                                    "8:12 am",
-                                    style: TextStyle(
+                                    "${TimeOfDay.now().format(context)}",
+                                    style: const TextStyle(
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12,
-                                      height: 1.9, // line-height approx 23px
+                                      height: 1.9,
                                       color: Color(0xFFB0B3B8),
                                     ),
                                   ),
@@ -141,8 +196,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ],
         ),
       ),
-
-      // 🔹 Bottom Navigation
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onNavTap,

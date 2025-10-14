@@ -5,6 +5,7 @@ class TextInputBox extends StatelessWidget {
   final String label;
   final String hintText;
   final Widget? suffixIcon;
+  final String? errorText; // ✅ Add error text
 
   const TextInputBox({
     Key? key,
@@ -12,6 +13,7 @@ class TextInputBox extends StatelessWidget {
     required this.label,
     required this.hintText,
     this.suffixIcon,
+    this.errorText, // ✅ Receive error text
   }) : super(key: key);
 
   @override
@@ -25,6 +27,8 @@ class TextInputBox extends StatelessWidget {
         hintText: hintText,
         hintStyle: const TextStyle(color: Colors.grey),
         suffixIcon: suffixIcon,
+        errorText: errorText, // ✅ Show error text
+        errorStyle: const TextStyle(color: Colors.redAccent),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.grey),
           borderRadius: BorderRadius.circular(8),

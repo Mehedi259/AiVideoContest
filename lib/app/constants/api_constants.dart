@@ -26,10 +26,13 @@ class ApiConstants {
   // Badges/Winners
   static const String winners = "/api/admin/winners/";
 
+  // NEW: Competition & Feedback
+  static const String themes = "/api/dashboard/themes/";
+  static const String feedback = "/api/dashboard/feedback/";
+
   // Video Actions
   static String videoAction(int videoId) => "/api/dashboard/videos/$videoId/action/";
   static String videoDetail(int videoId) => "/api/dashboard/videos/$videoId/";
-  //static String deleteVideo(int videoId) => "/api/dashboard/videos/$videoId/delete/";
   static String downloadWinner(int winnerId) => "/api/winners/download/$winnerId/";
   static String deleteVideo(int id) => "/api/dashboard/videos/$id/delete/";
 }

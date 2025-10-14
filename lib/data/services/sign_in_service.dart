@@ -29,7 +29,10 @@ class SignInService {
         final tokenMap = response['token'] as Map<String, dynamic>;
         accessToken = tokenMap['access'] as String?;
         refreshToken = tokenMap['refresh'] as String?;
-        developer.log('✅ Found nested token - Access: ${accessToken?.substring(0, 20)}...', name: 'SignInService');
+        developer.log(
+          '✅ Found nested token - Access: ${accessToken?.substring(0, 20)}...',
+          name: 'SignInService',
+        );
       }
       // Check if token is directly a string
       else if (response['token'] != null && response['token'] is String) {
@@ -53,7 +56,7 @@ class SignInService {
         }
       }
 
-      // Save access token
+      // ✅ Save access token
       if (accessToken != null && accessToken.isNotEmpty) {
         await StorageHelper.saveToken(accessToken);
         developer.log('✅ Access token saved successfully', name: 'SignInService');
@@ -61,24 +64,41 @@ class SignInService {
         developer.log('⚠️ No access token found in response', name: 'SignInService');
       }
 
-      // Optionally save refresh token (if needed)
+      // ✅ Optionally save refresh token (if needed)
       if (refreshToken != null && refreshToken.isNotEmpty) {
-        // You can save refresh token separately if needed
         developer.log('✅ Refresh token available', name: 'SignInService');
       }
 
       return {
         'success': true,
-        'message': response['msg'] ?? response['message'] ?? 'Login successful',
+        'message': response['msg'] ??
+            response['message'] ??
+            'Login successful',
         'data': response,
         'access_token': accessToken,
         'refresh_token': refreshToken,
       };
     } catch (e) {
       developer.log('❌ Login Error: $e', name: 'SignInService');
+
+      // 🧠 Friendly error message for users
+      String message = e.toString();
+
+      if (message.contains('404') &&
+          message.contains('non_field_errors') &&
+          message.contains('not Valid')) {
+        message = 'Wrong email or password. Please try again.';
+      } else if (message.contains('Failed host lookup')) {
+        message = 'No internet connection. Please check your network.';
+      } else if (message.contains('TimeoutException')) {
+        message = 'Server timeout. Please try again later.';
+      } else if (message.contains('500')) {
+        message = 'Internal server error. Please try again later.';
+      }
+
       return {
         'success': false,
-        'message': e.toString().replaceAll('Exception: ', ''),
+        'message': message,
       };
     }
   }

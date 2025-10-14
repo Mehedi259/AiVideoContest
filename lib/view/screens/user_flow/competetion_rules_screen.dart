@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:Prommt/gen/assets.gen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../../app/routes/app_routes.dart';
+import '../../../controllers/video_competetion_controller.dart';
 import '../../widgets/navigation_bar.dart';
 import '../../widgets/custom_drawer.dart';
 
@@ -16,6 +18,15 @@ class CompetetionRulesScreen extends StatefulWidget {
 class _CompetetionRulesScreenState extends State<CompetetionRulesScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch active theme when screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VideoCompetitionController>().fetchActiveTheme();
+    });
+  }
 
   void _onNavTap(int index) {
     setState(() {
@@ -56,7 +67,7 @@ class _CompetetionRulesScreenState extends State<CompetetionRulesScreen> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => context.go(Routes.home), // 🔹 back to previous screen
+                    onTap: () => context.go(Routes.home),
                     child: Assets.icons.backButton.image(width: 30, height: 30),
                   ),
                   const SizedBox(width: 16),
@@ -73,79 +84,113 @@ class _CompetetionRulesScreenState extends State<CompetetionRulesScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 46), // to balance back button
+                  const SizedBox(width: 46),
                 ],
               ),
             ),
 
-            // Scrollable content
+            // Content
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Banner Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Assets.images.themeImage.image(
-                        width: double.infinity,
-                        height: 127,
-                        //fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
+              child: Consumer<VideoCompetitionController>(
+                builder: (context, controller, child) {
+                  if (controller.isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Color(0xFF004AAD)),
+                    );
+                  }
 
-                    // Competition Rules Title
-                    const Text(
-                      "Competition Rules",
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20,
-                        color: Colors.white,
+                  if (controller.error != null) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Error loading theme',
+                            style: const TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () => controller.fetchActiveTheme(),
+                            child: const Text('Retry'),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 16),
+                    );
+                  }
 
-                    // Rules Body (Bullet style)
-                    _buildRule(
-                      "Theme Required",
-                      "All videos must follow a Halloween theme — spooky, funny, scary, creepy, or creative.",
+                  final theme = controller.activeTheme;
+
+                  if (theme == null) {
+                    return const Center(
+                      child: Text(
+                        'No active theme available',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    );
+                  }
+
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Theme Banner Image
+                        SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            color: Colors.black,
+                            child: theme.themeCoverImageUrl.isNotEmpty
+                                ? Image.network(
+                              theme.themeCoverImageUrl,
+                              fit: BoxFit.cover,
+                            )
+                                : Assets.images.themeImage.image(fit: BoxFit.cover),
+                          ),
+                        ),
+
+
+                        const SizedBox(height: 24),
+
+                        // Theme Name
+                        Text(
+                          theme.themeName,
+                          style: const TextStyle(
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Competition Rules Title
+                        const Text(
+                          "Competition Rules",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Dynamic Rules from API
+                        _buildRule("Theme Rules", theme.rules),
+
+
+                      ],
                     ),
-                    _buildRule(
-                      "Video Length",
-                      "Each video should be between 15 to 60 seconds long.",
-                    ),
-                    _buildRule(
-                      "Original Content Only",
-                      "No copyrighted material. All videos must be created by you.",
-                    ),
-                    _buildRule(
-                      "Upload Deadline",
-                      "Submissions must be uploaded by October 30th, 11:59 PM (local time).",
-                    ),
-                    _buildRule(
-                      "No Harmful Content",
-                      "No real violence, hate speech, gore, or anything that violates community standards.",
-                    ),
-                    _buildRule(
-                      "One Entry Per User",
-                      "Each participant can submit only one video per contest cycle.",
-                    ),
-                    _buildRule(
-                      "Voting System",
-                      "Winners are chosen based on views + likes. Fake engagement will result in disqualification.",
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
 
-      // 🔹 Same navigation bar as HomeScreen
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onNavTap,
@@ -153,7 +198,6 @@ class _CompetetionRulesScreenState extends State<CompetetionRulesScreen> {
     );
   }
 
-  // Helper method for rules with bullets
   Widget _buildRule(String title, String body) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),

@@ -4,11 +4,13 @@ import 'package:Prommt/gen/assets.gen.dart';
 class PasswordInput extends StatefulWidget {
   final TextEditingController controller;
   final String label;
+  final String? errorText;
 
   const PasswordInput({
     Key? key,
     required this.controller,
     required this.label,
+    this.errorText,
   }) : super(key: key);
 
   @override
@@ -26,9 +28,11 @@ class _PasswordInputState extends State<PasswordInput> {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         labelText: widget.label,
-        labelStyle: const TextStyle(color: Colors.white54),
-        hintText: "********",
-        hintStyle: const TextStyle(color: Colors.grey),
+        labelStyle: const TextStyle(color: Color(0xFFFFFFFF)),
+        hintText: "eg:A-Z!@#%^&* ",
+        hintStyle: const TextStyle(color: Color(0x80FFFFFF)),
+        errorText: widget.errorText,
+        errorStyle: const TextStyle(color: Colors.redAccent),
         suffixIcon: InkWell(
           onTap: () {
             setState(() {

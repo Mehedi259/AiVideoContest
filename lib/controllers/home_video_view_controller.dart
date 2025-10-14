@@ -22,11 +22,13 @@ class HomeVideoViewController extends GetxController {
   VideoPlayerController? videoController;
   ChewieController? chewieController;
 
+  bool _hasRecordedView = false; // 👈 নতুন ফ্ল্যাগ
+
   @override
   void onInit() {
     super.onInit();
     loadVideoDetail();
-    recordView();
+    recordViewOnce(); // 👈 এখন শুধু একবারই কল হবে
   }
 
   @override
@@ -90,8 +92,10 @@ class HomeVideoViewController extends GetxController {
     isVideoReady.value = true;
   }
 
-  /// Record video view
-  Future<void> recordView() async {
+  /// Record video view only once
+  Future<void> recordViewOnce() async {
+    if (_hasRecordedView) return; // 👈 একবার record হবার পর আর হবে না
+    _hasRecordedView = true;
     await HomeVideoViewService.performAction(videoId, 'views');
   }
 

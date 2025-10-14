@@ -22,6 +22,17 @@ class SignUpController extends GetxController {
     super.onClose();
   }
 
+  /// ✅ Strong password validation rule
+  bool _isStrongPassword(String password) {
+    final hasUppercase = password.contains(RegExp(r'[A-Z]'));
+    final hasLowercase = password.contains(RegExp(r'[a-z]'));
+    final hasDigit = password.contains(RegExp(r'\d'));
+    final hasSpecialChar = password.contains(RegExp(r'[!@#%^&*(),.?":{}|<>]'));
+    final hasMinLength = password.length >= 8;
+
+    return hasUppercase && hasLowercase && hasDigit && hasSpecialChar && hasMinLength;
+  }
+
   /// Validate form fields
   bool _validateFields() {
     errorMessage.value = '';
@@ -41,7 +52,6 @@ class SignUpController extends GetxController {
       return false;
     }
 
-    // Basic email validation
     if (!GetUtils.isEmail(emailController.text.trim())) {
       errorMessage.value = 'Please enter a valid email';
       return false;
@@ -52,8 +62,10 @@ class SignUpController extends GetxController {
       return false;
     }
 
-    if (passwordController.text.length < 8) {
-      errorMessage.value = 'Password must be at least 8 characters';
+    /// ✅ Weak password check
+    if (!_isStrongPassword(passwordController.text)) {
+      errorMessage.value =
+      'Password is too weak. Use at least 8 characters including upper, lower, number & special symbol.';
       return false;
     }
 
