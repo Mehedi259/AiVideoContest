@@ -23,8 +23,8 @@ class ApiConstants {
   static const String profile = "/api/user/profile/";
   static const String changePassword = "/api/user/change-password/";
 
-  // Badges/Winners
-  static const String winners = "/api/admin/winners/";
+  // Badges/Winners - FIXED: Changed from /api/admin/winners/ to /api/winners/
+  static const String winners = "/api/winners/";
 
   // NEW: Competition & Feedback
   static const String themes = "/api/dashboard/themes/";
