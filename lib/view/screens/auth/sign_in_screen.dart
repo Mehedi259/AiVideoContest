@@ -7,6 +7,8 @@ import 'package:Prommt/view/widgets/password_input.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/sign_in_controller.dart';
+import '../../../controllers/google_sign_in_controller.dart';
+import '../../../controllers/apple_sign_in_controller.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final SignInController controller = Get.put(SignInController());
+  final GoogleSignInController googleController = Get.put(GoogleSignInController());
+  final AppleSignInController appleController = Get.put(AppleSignInController());
 
   @override
   Widget build(BuildContext context) {
@@ -138,13 +142,47 @@ class _SignInScreenState extends State<SignInScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  InkWell(
-                      onTap: () {},
-                      child: Assets.icons.apple.image(height: 48)),
+                  Obx(() => appleController.isLoading.value
+                      ? const SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF004AAD),
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  )
+                      : InkWell(
+                    onTap: () async {
+                      await appleController.signInWithApple(
+                        context: context,
+                      );
+                    },
+                    child: Assets.icons.apple.image(height: 48),
+                  ),
+                  ),
                   const SizedBox(width: 24),
-                  InkWell(
-                      onTap: () {},
-                      child: Assets.icons.google.image(height: 48)),
+                  Obx(() => googleController.isLoading.value
+                      ? const SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xFF004AAD),
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  )
+                      : InkWell(
+                    onTap: () async {
+                      await googleController.signInWithGoogle(
+                        context: context,
+                      );
+                    },
+                    child: Assets.icons.google.image(height: 48),
+                  ),
+                  ),
                 ],
               ),
             ],

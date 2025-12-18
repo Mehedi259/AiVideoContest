@@ -67,7 +67,7 @@
 //     );
 //   }
 // }
-
+//lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -82,21 +82,33 @@ import 'controllers/video_competetion_controller.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // System UI
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  // 🔹 Timezone initialize
+  // Timezone init
   tz.initializeTimeZones();
 
-  // 🔹 Notification initialization
-  const AndroidInitializationSettings initializationSettingsAndroid =
+  // 🔔 Notification initialization (ANDROID + IOS)
+  const androidSettings =
   AndroidInitializationSettings('@mipmap/ic_launcher');
 
-  const InitializationSettings initializationSettings =
-  InitializationSettings(android: initializationSettingsAndroid);
+  const iosSettings = DarwinInitializationSettings(
+    requestAlertPermission: true,
+    requestBadgePermission: true,
+    requestSoundPermission: true,
+  );
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  const initializationSettings = InitializationSettings(
+    android: androidSettings,
+    iOS: iosSettings,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+  );
 
   runApp(const MyApp());
 }
@@ -108,8 +120,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ContactFeedbackController()),
-        ChangeNotifierProvider(create: (_) => VideoCompetitionController()),
+        ChangeNotifierProvider(
+          create: (_) => ContactFeedbackController(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => VideoCompetitionController(),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
@@ -119,7 +135,9 @@ class MyApp extends StatelessWidget {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             title: 'Prommt',
-            theme: ThemeData(primarySwatch: Colors.blue),
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
             routerConfig: AppPages.router,
           );
         },

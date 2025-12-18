@@ -1,3 +1,4 @@
+//lib/app/routes/app_pages.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../view/screens/auth/otp_screen_after_registration.dart';

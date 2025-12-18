@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = "http://10.10.7.86:8000";
+  static const String baseUrl = "https://prommt.cc";
 
   // Auth Endpoints
   static const String register = "/api/user/register/";
@@ -8,6 +8,10 @@ class ApiConstants {
   static const String sendResetPasswordEmail = "/api/user/send-reset-password-email/";
   static const String resetPasswordOtp = "/api/user/reset-password-otp/";
   static const String setNewPassword = "/api/user/set-new-password/";
+
+  // Social Login Endpoints
+  static const String googleLogin = "/api/user/google/id-token/";
+  static const String appleLogin = "/api/dj-rest-auth/apple/";
 
   // Dashboard Endpoints
   static const String videos = "/api/dashboard/videos/";

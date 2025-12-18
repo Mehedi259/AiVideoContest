@@ -1,3 +1,4 @@
+//lib/app/routes/app_routes.dart
 class Routes {
   static const welcome = '/';
   static const signIn = '/signIn';

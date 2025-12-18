@@ -139,17 +139,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
               ),
-              const SizedBox(height: 16),
-
-              /// Social Login Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(onTap: () {}, child: Assets.icons.apple.image(height: 48)),
-                  const SizedBox(width: 24),
-                  InkWell(onTap: () {}, child: Assets.icons.google.image(height: 48)),
-                ],
-              ),
             ],
           ),
         ),

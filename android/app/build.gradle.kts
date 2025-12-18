@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.trope"
-        minSdk = 23 // Minimum SDK for Firebase/Auth compatibility
+        minSdk = flutter.minSdkVersion // Minimum SDK for Firebase/Auth compatibility
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
