@@ -6,7 +6,7 @@
 //}
 //
 //android {
-//    namespace = "com.example.trope"
+//    namespace = "com.trope.prommt"
 //    compileSdk = flutter.compileSdkVersion
 //    ndkVersion = "27.0.12077973" // Fixed NDK version
 //
@@ -20,7 +20,7 @@
 //    }
 //
 //    defaultConfig {
-//        applicationId = "com.example.trope"
+//        applicationId = "com.trope.prommt"
 //        minSdk = 23 // Increased from flutter.minSdkVersion to fix Firebase Auth issue
 //        targetSdk = flutter.targetSdkVersion
 //        versionCode = flutter.versionCode
@@ -48,12 +48,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.trope"
+    namespace = "com.trope.prommt"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973" // Fixed NDK version
 
     defaultConfig {
-        applicationId = "com.example.trope"
+        applicationId = "com.trope.prommt"
         minSdk = flutter.minSdkVersion // Minimum SDK for Firebase/Auth compatibility
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

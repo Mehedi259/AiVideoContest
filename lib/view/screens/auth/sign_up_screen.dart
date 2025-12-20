@@ -1,3 +1,4 @@
+//lib/view/screens/auth/sign_up_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Prommt/gen/assets.gen.dart';
@@ -124,19 +125,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              /// Divider with "Or"
-              Row(
-                children: [
-                  Expanded(child: Divider(color: Colors.grey.shade700)),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Text("Or", style: TextStyle(color: Colors.white)),
-                  ),
-                  Expanded(child: Divider(color: Colors.grey.shade700)),
                 ],
               ),
             ],

@@ -1,4 +1,4 @@
-package com.example.trope
+package com.trope.prommt
 
 import io.flutter.embedding.android.FlutterActivity
 

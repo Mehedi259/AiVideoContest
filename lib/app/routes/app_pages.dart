@@ -1,4 +1,4 @@
-//lib/app/routes/app_pages.dart
+// lib/app/routes/app_pages.dart
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../view/screens/auth/otp_screen_after_registration.dart';
@@ -28,11 +28,12 @@ import '../../view/screens/user_flow/winner_screen.dart';
 import 'app_routes.dart';
 
 void _logRouteChange(String name, String path) {
-  debugPrint('[ROUTE]  → $name ($path)');
+  debugPrint('[ROUTE] 🔀 → $name ($path)');
 }
 
 class AppPages {
   static final router = GoRouter(
+    // ✅ WelcomeScreen নিজেই token check করবে
     initialLocation: Routes.welcome,
     routes: [
       GoRoute(
@@ -40,7 +41,7 @@ class AppPages {
         name: 'Welcome Screen',
         builder: (context, state) {
           _logRouteChange('Welcome Screen', state.uri.toString());
-          return WelcomeScreen();
+          return const WelcomeScreen();
         },
       ),
       GoRoute(
