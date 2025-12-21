@@ -66,6 +66,7 @@ dependencies:
   
   # Provider (for state management)
   provider: ^6.1.2
+  google_mobile_ads: ^7.0.0
 
 dev_dependencies:
   flutter_test:

@@ -5,8 +5,10 @@ import 'package:Prommt/view/widgets/custom_video_card.dart';
 import 'package:Prommt/view/widgets/custom_drawer.dart';
 import 'package:Prommt/view/widgets/navigation_bar.dart';
 import 'package:Prommt/gen/assets.gen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/home_controller.dart';
+import '../../../data/services/admob_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +21,39 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final HomeController controller = Get.put(HomeController());
   int _currentIndex = 0;
+
+  // ✅ Banner Ad Variables
+  BannerAd? _bannerAd;
+  bool _isBannerAdLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBannerAd();
+  }
+
+  // ✅ Load Banner Ad
+  void _loadBannerAd() {
+    _bannerAd = AdMobHelper.createBannerAd(
+      onAdLoaded: (ad) {
+        setState(() {
+          _isBannerAdLoaded = true;
+        });
+        print('✅ Banner Ad Loaded');
+      },
+      onAdFailedToLoad: (ad, error) {
+        print('❌ Banner Ad Failed to Load: $error');
+        ad.dispose();
+      },
+    );
+    _bannerAd?.load();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
 
   void _onNavTap(int index) {
     setState(() {
@@ -100,6 +135,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
+            // ✅ Banner Ad Section
+            if (_isBannerAdLoaded && _bannerAd != null)
+              Container(
+                alignment: Alignment.center,
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              ),
+
+            const SizedBox(height: 10),
 
             // 🔹 Theme name
             Obx(() {
