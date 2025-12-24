@@ -11,22 +11,20 @@ class CustomNavigationBar extends StatelessWidget {
     required this.onTap,
   });
 
-  Widget _buildNavItem({
+  Widget _navItem({
     required int index,
     required Widget icon,
     required bool isActive,
-    required double top,
-    required double left,
-    double dotOffsetX = 10,
     bool isCenter = false,
   }) {
-    return Positioned(
-      top: top,
-      left: left,
-      child: GestureDetector(
-        onTap: () => onTap(index),
+    return GestureDetector(
+      onTap: () => onTap(index),
+      behavior: HitTestBehavior.translucent,
+      child: SizedBox(
+        height: 60,
         child: Stack(
           clipBehavior: Clip.none,
+          alignment: Alignment.center,
           children: [
             if (isCenter)
               Container(
@@ -34,24 +32,16 @@ class CustomNavigationBar extends StatelessWidget {
                 height: 60,
                 decoration: BoxDecoration(
                   color: const Color(0xFF004AAD),
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF004AAD),
-                      offset: const Offset(0, 0),
-                      blurRadius: 0,
-                      spreadRadius: 0,
-                    ),
-                  ],
+                  shape: BoxShape.circle,
                 ),
                 child: Center(child: icon),
               )
             else
               icon,
+
             if (isActive)
               Positioned(
-                top: -12,
-                left: isCenter ? 25.5 : dotOffsetX,
+                top: isCenter ? -0 : -0,
                 child: Assets.icons.activeDot.image(
                   width: 9.12,
                   height: 9.12,
@@ -65,65 +55,70 @@ class CustomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
     return SafeArea(
       bottom: true,
       child: Container(
-        color: const Color(0xFF1C1C1E),
+        height: 80,
         padding: const EdgeInsets.only(bottom: 8),
-        child: SizedBox(
-          width: double.infinity,
-          height: 80,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              _buildNavItem(
+        color: const Color(0xFF1C1C1E),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: _navItem(
                 index: 0,
+                isActive: currentIndex == 0,
                 icon: currentIndex == 0
                     ? Assets.icons.activeHome.image(width: 30, height: 30)
                     : Assets.icons.inActiveHome.image(width: 30, height: 30),
-                isActive: currentIndex == 0,
-                top: 30,
-                left: width * 0.07,
               ),
-              _buildNavItem(
+            ),
+
+            Expanded(
+              child: _navItem(
                 index: 1,
+                isActive: currentIndex == 1,
                 icon: currentIndex == 1
                     ? Assets.icons.activeLike.image(width: 30, height: 30)
                     : Assets.icons.inActiveLike.image(width: 30, height: 30),
-                isActive: currentIndex == 1,
-                top: 30,
-                left: width * 0.27,
               ),
-              _buildNavItem(
-                index: 2,
-                icon: Assets.icons.inActiveAddVideo.image(width: 20, height: 20),
-                isActive: currentIndex == 2,
-                top: -20,
-                left: width * 0.5 - 30,
-                isCenter: true,
+            ),
+
+            Expanded(
+              child: Transform.translate(
+                offset: const Offset(0, -24),
+                child: _navItem(
+                  index: 2,
+                  isCenter: true,
+                  isActive: currentIndex == 2,
+                  icon: Assets.icons.inActiveAddVideo.image(
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
               ),
-              _buildNavItem(
+            ),
+
+            Expanded(
+              child: _navItem(
                 index: 3,
+                isActive: currentIndex == 3,
                 icon: currentIndex == 3
                     ? Assets.icons.activeWinner.image(width: 30, height: 30)
                     : Assets.icons.inActiveAddWinner.image(width: 30, height: 30),
-                isActive: currentIndex == 3,
-                top: 30,
-                left: width * 0.68,
               ),
-              _buildNavItem(
+            ),
+
+            Expanded(
+              child: _navItem(
                 index: 4,
+                isActive: currentIndex == 4,
                 icon: currentIndex == 4
                     ? Assets.icons.activeProfile.image(width: 30, height: 30)
                     : Assets.icons.inActiveProfile.image(width: 30, height: 30),
-                isActive: currentIndex == 4,
-                top: 30,
-                left: width * 0.88,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

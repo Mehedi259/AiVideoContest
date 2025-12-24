@@ -55,7 +55,7 @@ class ApiService {
       return processResponse(response);
     } catch (e) {
       developer.log('❌ GET Error: $e', name: 'ApiService');
-      throw Exception("GET request error: $e");
+      // throw Exception("$e");
     }
   }
 
