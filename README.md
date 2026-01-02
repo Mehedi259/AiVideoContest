@@ -50,7 +50,8 @@ If you find any issues or have feature suggestions, please share them.
 
 📄 License
 
-This project is proprietary. All rights reserved.<img width="300" height="900" alt="1" src="https://github.com/user-attachments/assets/d1fef651-a419-4a9e-a138-87ed722503fe" />
+This project is proprietary. All rights reserved.
+<img width="300" height="900" alt="1" src="https://github.com/user-attachments/assets/d1fef651-a419-4a9e-a138-87ed722503fe" />
 <img width="300" height="900" alt="2" src="https://github.com/user-attachments/assets/db92efba-d2bd-43be-9868-df678436881d" />
 <img width="300" height="900" alt="3" src="https://github.com/user-attachments/assets/9caabb95-4538-458a-97fb-2f9223f5f34f" />
 <img width="300" height="900" alt="4" src="https://github.com/user-attachments/assets/9a2aa32e-5612-43fc-b665-950f5b41f323" />
